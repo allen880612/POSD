@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-
 #include <algorithm>
 
 #include "../src/square.h"
@@ -14,10 +13,11 @@ TEST(CaseSquare, Area) {
     ASSERT_NEAR(100, s.area(), 0.0001);
 }
 
+// lambda
 TEST(CaseSquare, SortIncreasing) {
     Square squares[2] = {Square(10.0), Square(2.0)};
     std::sort(squares, squares + 2, [](Square s1, Square s2) {
-        return s1.area() < s2.area();  // lambda
+        return s1.area() < s2.area();
     });
     ASSERT_NEAR(4, squares[0].area(),0.0001);
     ASSERT_NEAR(100, squares[1].area(),0.0001);
