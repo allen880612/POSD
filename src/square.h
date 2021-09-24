@@ -6,4 +6,5 @@ class Square {
 
    private:
     double _sideLength;
+    
 };
