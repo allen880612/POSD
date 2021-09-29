@@ -1,3 +1,5 @@
+#pragma once
+
 class Square {
    public:
     Square(double sideLength) : _sideLength(sideLength) {}
