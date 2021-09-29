@@ -4,6 +4,9 @@
         "fstream": "cpp",
         "sstream": "cpp",
         "iosfwd": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "*.tcc": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp"
     }
 }

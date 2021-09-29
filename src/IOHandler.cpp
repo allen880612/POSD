@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "IOHandler.h"
+using namespace std;
 
 string IOHandler::readFile(string filePath)
 {
@@ -23,11 +24,14 @@ string IOHandler::readFile(string filePath)
 
 void IOHandler::writeFile(string filePath, string content)
 {
-    
+    ofstream file(filePath);
+    file << content;
+    file.close();
 }
 
 // int main(int argc, char** argv) {
 //     IOHandler io;
-//     cout << io.readFile("src/input/readFileTest.txt") << endl;
+//     // cout << io.readFile("src/input/readFileTest.txt") << endl;
+//     io.writeFile("src/output/outFileTest.txt", "outputTest");
 //     return 1;
 // }

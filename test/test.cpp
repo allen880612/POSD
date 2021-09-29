@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 #include "test_square.h"
+#include "test_circle.h"
+#include "test_shape.h"
 #include "test_IOHandler.h"
 
 int main(int argc, char** argv) {
