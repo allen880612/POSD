@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-#include <algorithm>
+#pragma once
 
+#include <algorithm>
 #include "../src/square.h"
 
 TEST(CaseSquare, Creation) {
@@ -18,9 +18,9 @@ TEST(CaseSquare, Area) {
     ASSERT_NEAR(100, s.area(), 0.0001);
 }
 
-// lambda
 TEST(CaseSquare, SortIncreasing) {
     Square squares[2] = {Square(10.0), Square(2.0)};
+    // lambda
     std::sort(squares, squares + 2, [](Square s1, Square s2) {
         return s1.area() < s2.area();
     });
