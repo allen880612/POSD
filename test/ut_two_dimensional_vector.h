@@ -53,6 +53,13 @@ TEST_F(CaseTwoDimensionalVector, InfoShouldOnlyShouldTwoDecimal)
     ASSERT_EQ(expected, v2.info());
 }
 
+TEST_F(CaseTwoDimensionalVector, Subtract)
+{
+    TwoDimensionalVector vecSub = vector2_5_12->subtract(*vector2_3_4);
+    ASSERT_NEAR(2.0, vecSub.x(), ACCURACY);
+    ASSERT_NEAR(8.0, vecSub.y(), ACCURACY);
+}
+
 TEST_F(CaseTwoDimensionalVector, Dot)
 {
     ASSERT_NEAR(63.0, vector2_3_4->dot(*vector2_5_12), ACCURACY);

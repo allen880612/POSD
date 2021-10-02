@@ -10,8 +10,8 @@ public:
         _length = sqrt(x * x + y * y);
     }
 
-    double x() { return _x; }
-    double y() { return _y; }
+    double x() const { return _x; }
+    double y() const { return _y; }
     double length() const { return _length; }
     std::string info() const
     {
@@ -22,6 +22,7 @@ public:
 
     double dot(const TwoDimensionalVector &other) const { return _x * other._x + _y * other._y; }
     double cross(const TwoDimensionalVector &other) const { return _x * other._y - _y * other._x; }
+    TwoDimensionalVector subtract(TwoDimensionalVector other) const { return TwoDimensionalVector(_x - other._x, _y - other._y); }
     double euclideanDistance(const TwoDimensionalVector &other) const {return sqrt(powf(_x - other._x, 2) + pow(_y - other._y, 2));}
 
 private:

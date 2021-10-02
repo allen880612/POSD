@@ -1,57 +1,53 @@
 #pragma once
-// #include <algorithm>
-// #include <vector>
 #include "../src/circle.h"
+#include "../src/rectangle.h"
+#include "../src/triangle.h"
 #include "../src/shape.h"
 
-// class CaseShape : public ::testing::Test
-// {
-// protected:
-//     void SetUp() override
-//     {
-//         s10 = new Square(10.0);
-//         c10 = new Circle(10.0);
-//     }
+#define ACCURACY 0.001
 
-//     void TearDown() override
-//     {
-//         delete s10;
-//         delete c10;
-//     }
+class CaseShape : public ::testing::Test
+{
+protected:
+    void SetUp() override
+    {
+        r3_4 = new Rectangle(3.0, 4.0);
+        c10 = new Circle(10.0);
+        t3_4 = new Triangle(TwoDimensionalVector(3, 0), TwoDimensionalVector(0, 4));
+    }
 
-//     Shape *s10;
-//     Shape *c10;
-// };
+    void TearDown() override
+    {
+        delete r3_4;
+        delete c10;
+    }
 
-// TEST_F(CaseShape, CreationShape)
-// {
-//     ASSERT_NEAR(100, s10->area(), 0.0001);
-//     ASSERT_NEAR(40, s10->perimeter(), 0.0001);
+    Shape *r3_4;
+    Shape *c10;
+    Shape *t3_4;
+};
 
-//     ASSERT_NEAR(314.15, c10->area(), 0.1);
-//     ASSERT_NEAR(62.83, c10->perimeter(), 0.1);
-// }
+TEST_F(CaseShape, Area)
+{
+    ASSERT_NEAR(12.0, r3_4->area(), ACCURACY);
+    ASSERT_NEAR(314.159, c10->area(), ACCURACY);
+    ASSERT_NEAR(6.0, t3_4->area(), ACCURACY);
+}
 
-// TEST_F(CaseShape, SortIncreasing)
-// {
-//     std::vector<Shape *> shapes;
-//     shapes.push_back(c10);
-//     shapes.push_back(s10);
-//     std::sort(shapes.begin(), shapes.end(), [](Shape *s1, Shape *s2)
-//               { return s1->area() < s2->area(); });
-//     ASSERT_NEAR(100, shapes[0]->area(), 0.0001);
-//     ASSERT_NEAR(314.159, shapes[1]->area(), 0.01);
-// }
+TEST_F(CaseShape, Perimeter)
+{
+    ASSERT_NEAR(14.0, r3_4->perimeter(), ACCURACY);
+    ASSERT_NEAR(62.8318, c10->perimeter(), ACCURACY);
+    ASSERT_NEAR(12.0, t3_4->perimeter(), ACCURACY);
+}
 
-// TEST_F(CaseShape, SortDescending)
-// {
-//     std::vector<Shape *> shapes;
-//     shapes.push_back(s10);
-//     shapes.push_back(c10);
+TEST_F(CaseShape, Info)
+{
+    std::string rectangle = "Rectangle (3.00, 4.00)";
+    std::string circle    = "Circle (10.00)";
+    std::string triangle  = "Triangle ([3.00,0.00] [0.00,4.00])";
 
-//     std::sort(shapes.begin(), shapes.end(), [](Shape *s1, Shape *s2)
-//               { return s1->area() >= s2->area(); });
-
-//     ASSERT_NEAR(314.159, shapes[0]->area(), 0.1);
-//     ASSERT_NEAR(100, shapes[1]->area(), 0.0001);
-// }
+    ASSERT_EQ(rectangle, r3_4->info());
+    ASSERT_EQ(circle, c10->info());
+    ASSERT_EQ(triangle, t3_4->info());
+}
