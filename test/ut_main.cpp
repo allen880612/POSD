@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
-#include "test_square.h"
-#include "test_circle.h"
-#include "test_shape.h"
-#include "test_IOHandler.h"
+// #include "ut_square.h"
+#include "ut_circle.h"
+#include "ut_shape.h"
 
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
