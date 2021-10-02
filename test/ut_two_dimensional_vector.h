@@ -56,3 +56,9 @@ TEST_F(CaseTwoDimensionalVector, Cross)
 {
     ASSERT_NEAR(16.0, vector2_3_4->cross(*vector2_5_12), ACCURACY);
 }
+
+TEST_F(CaseTwoDimensionalVector, EuclideanDistance)
+{
+    // vector2 (3, 4) with vector(0, 0) distance should be 5
+    ASSERT_NEAR(5.0, vector2_3_4->euclideanDistance(TwoDimensionalVector()), ACCURACY);
+}
