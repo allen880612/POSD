@@ -43,7 +43,7 @@ TEST_F(CaseShape, Perimeter)
 
 TEST_F(CaseShape, Info)
 {
-    std::string rectangle = "Rectangle (3.00,4.00)";
+    std::string rectangle = "Rectangle (3.00 4.00)";
     std::string circle    = "Circle (10.00)";
     std::string triangle  = "Triangle ([3.00,0.00] [0.00,4.00])";
 

@@ -64,7 +64,7 @@ TEST(CaseRectangle, CreateWithZeroWidth)
 TEST(CaseRectangle, Info)
 {
     Rectangle r_decimal(4.32, 5.67);
-    std::string expected = "Rectangle (4.32,5.67)";
+    std::string expected = "Rectangle (4.32 5.67)";
 
     ASSERT_EQ(expected, r_decimal.info());
 }
@@ -72,7 +72,7 @@ TEST(CaseRectangle, Info)
 TEST(CaseRectangle, InfoShouldOnlyShowTwoDecimal)
 {
     Rectangle r_decimal(4.123, 5.123);
-    std::string expected = "Rectangle (4.12,5.12)";
+    std::string expected = "Rectangle (4.12 5.12)";
 
     ASSERT_EQ(expected, r_decimal.info());
 }
@@ -80,7 +80,7 @@ TEST(CaseRectangle, InfoShouldOnlyShowTwoDecimal)
 TEST(CaseRectangle, InfoShouldShowTwoDecimal)
 {
     Rectangle r_decimal(4.1, 5.1);
-    std::string expected = "Rectangle (4.10,5.10)";
+    std::string expected = "Rectangle (4.10 5.10)";
 
     ASSERT_EQ(expected, r_decimal.info());
 }
