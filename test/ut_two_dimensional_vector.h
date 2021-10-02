@@ -28,6 +28,12 @@ TEST_F(CaseTwoDimensionalVector, CreateSuccessfully)
     ASSERT_NO_THROW(TwoDimensionalVector vector2_3_4(3.0, 4.0));
 }
 
+TEST_F(CaseTwoDimensionalVector, Vector)
+{
+    ASSERT_NEAR(3.0, vector2_3_4->x(), ACCURACY);
+    ASSERT_NEAR(4.0, vector2_3_4->y(), ACCURACY);
+}
+
 TEST_F(CaseTwoDimensionalVector, Length)
 {
     ASSERT_NEAR(5.0, vector2_3_4->length(), ACCURACY);

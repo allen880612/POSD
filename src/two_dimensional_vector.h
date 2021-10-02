@@ -10,8 +10,8 @@ public:
         _length = sqrt(x * x + y * y);
     }
 
-    double getX() { return _x; }
-    double getY() { return _y; }
+    double x() { return _x; }
+    double y() { return _y; }
     double length() const { return _length; }
     std::string info() const
     {
