@@ -17,7 +17,7 @@ public:
     std::string info() const 
     { 
         char buffer[100];
-        sprintf(buffer, "Rectangle (%.2lf, %.2lf)", _length, _width);
+        sprintf(buffer, "Rectangle (%.2lf,%.2lf)", _length, _width);
         return buffer;
     }
 
