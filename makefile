@@ -1,7 +1,7 @@
 .PHONY: clean dirs
 
-SRC = src/rectangle.h src/circle.h
-TEST = test/ut_rectangle.h test/ut_circle.h test/ut_shape.h
+SRC = src/shape.h src/rectangle.h src/circle.h src/two_dimensional_vector.h
+TEST = test/ut_rectangle.h test/ut_circle.h test/ut_shape.h test/ut_two_dimensional_vector.h
 
 all: dirs ut_main
 
