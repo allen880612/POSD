@@ -1,4 +1,3 @@
-#include <gtest/gtest.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -6,9 +5,10 @@
 
 TEST(CaseIOHandler, ReadFile) {
     IOHandler ioHandler;
+
     string actual = ioHandler.readFile("src/input/readFileTest.txt");
-    bool isEqual = "testRead" == actual;
-    ASSERT_TRUE(isEqual);
+    
+    ASSERT_EQ("testRead", actual);
 }
 
 TEST(CaseIOHandler, WriteFile) {
@@ -25,8 +25,7 @@ TEST(CaseIOHandler, WriteFile) {
     {
         ss << file.rdbuf();
         file.close();
-        bool isEqual = expected == ss.str();
-        ASSERT_TRUE(isEqual);
+        ASSERT_EQ(expected == ss.str());
     }
     else
     {

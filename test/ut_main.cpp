@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-// #include "ut_square.h"
 #include "ut_circle.h"
+#include "ut_rectangle.h"
 #include "ut_shape.h"
 
 int main(int argc, char** argv) {
