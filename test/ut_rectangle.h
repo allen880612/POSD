@@ -1,24 +1,12 @@
 #pragma once
-#include <gtest/gtest.h>
-#include <algorithm>
-#include <vector>
 #include "../src/rectangle.h"
 
-#define EXCEPTION_MSG std::string("Rectangle created by positive double length and width.")
+#define RECTANGLE_EXCEPTION_MSG std::string("Rectangle created by positive double length and width.")
+#define ACCURACY 0.001
 
-TEST(CaseRectangle, Creation)
+TEST(CaseRectangle, CreateSuccessfully)
 {
-    Rectangle r4_5(4.0, 5.0);
-    ASSERT_NEAR(20, r4_5.area(), 0.001);
-    ASSERT_NEAR(18, r4_5.perimeter(), 0.001);
-}
-
-TEST(CaseRectangle, Info)
-{
-    Rectangle r4_5(4.32, 5.67);
-    std::string expected = "Rectangle (4.32, 5.67)";
-
-    ASSERT_EQ(expected, r4_5.info());
+    ASSERT_NO_THROW(Rectangle r4_5(4.0, 5.0));
 }
 
 TEST(CaseRectangle, CreateWithNegativeLength)
@@ -30,7 +18,7 @@ TEST(CaseRectangle, CreateWithNegativeLength)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(EXCEPTION_MSG, e.what());
+        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -43,7 +31,7 @@ TEST(CaseRectangle, CreateWithNegativeWidth)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(EXCEPTION_MSG, e.what());
+        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -56,7 +44,7 @@ TEST(CaseRectangle, CreateWithZeroLength)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(EXCEPTION_MSG, e.what());
+        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -69,6 +57,44 @@ TEST(CaseRectangle, CreateWithZeroWidth)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(EXCEPTION_MSG, e.what());
+        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
+}
+
+TEST(CaseRectangle, Info)
+{
+    Rectangle r_decimal(4.32, 5.67);
+    std::string expected = "Rectangle (4.32, 5.67)";
+
+    ASSERT_EQ(expected, r_decimal.info());
+}
+
+TEST(CaseRectangle, InfoShouldOnlyShowTwoDecimal)
+{
+    Rectangle r_decimal(4.123, 5.123);
+    std::string expected = "Rectangle (4.12, 5.12)";
+
+    ASSERT_EQ(expected, r_decimal.info());
+}
+
+TEST(CaseRectangle, InfoShouldShowTwoDecimal)
+{
+    Rectangle r_decimal(4.1, 5.1);
+    std::string expected = "Rectangle (4.10, 5.10)";
+
+    ASSERT_EQ(expected, r_decimal.info());
+}
+
+TEST(CaseRectangle, Area)
+{
+    Rectangle r4_5(4.0, 5.0);
+
+    ASSERT_NEAR(20.0, r4_5.area(), ACCURACY);
+}
+
+TEST(CaseRectangle, Perimeter)
+{
+    Rectangle r4_5(4.0, 5.0);
+
+    ASSERT_NEAR(18.0, r4_5.perimeter(), ACCURACY);
 }
