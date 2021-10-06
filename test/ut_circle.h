@@ -9,28 +9,11 @@ TEST(CaseCircle, CreateSuccessfully) {
 }
 
 TEST(CaseCircle, CreateWWithNegativeRadiusShouldThrowException) {
-    try
-    {
-        Circle c(-1);
-        FAIL();
-    }
-    catch (std::string e)
-    {
-        ASSERT_EQ(CIRCLE_EXCEPTION_MSG, e);
-    }
-    // ASSERT_THROW(Circle c(-1), std::string);
+    ASSERT_THROW(Circle c(-1), std::invalid_argument);
 }
 
 TEST(CaseCircle, CreateWWithZeroRadiusShouldThrowException) {
-    try
-    {
-        Circle c(0);
-        FAIL();
-    }
-    catch (std::string e)
-    {
-        ASSERT_EQ(CIRCLE_EXCEPTION_MSG, e);
-    }
+    ASSERT_THROW(Circle c(0), std::invalid_argument);
 }
 
 TEST(CaseCircle, Area) {

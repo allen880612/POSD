@@ -13,7 +13,7 @@ public:
         _vectors[2] = v2;
 
         if (!isTriangle())
-            throw std::string("Triangle created by two non-parallel two dimensional _vectors.");
+            throw std::invalid_argument(std::string("Triangle created by two non-parallel two dimensional _vectors."));
         
         _sides[0] = _vectors[0].euclideanDistance(_vectors[1]);
         _sides[1] = _vectors[1].euclideanDistance(_vectors[2]);

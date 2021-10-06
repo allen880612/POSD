@@ -8,7 +8,7 @@ public:
     Circle(double radius)
     {
         if (radius <= 0)
-            throw std::string("Circle created by positive double radius.");
+            throw std::invalid_argument(std::string("Circle created by positive double radius."));
         _radius = radius;
     }
     double area() const { return _radius * _radius * M_PI; }

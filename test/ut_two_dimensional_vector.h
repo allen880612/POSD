@@ -55,9 +55,9 @@ TEST_F(CaseTwoDimensionalVector, InfoShouldOnlyShouldTwoDecimal)
 
 TEST_F(CaseTwoDimensionalVector, Subtract)
 {
-    TwoDimensionalVector vecSub = vector2_5_12->subtract(*vector2_3_4);
-    ASSERT_NEAR(2.0, vecSub.x(), ACCURACY);
-    ASSERT_NEAR(8.0, vecSub.y(), ACCURACY);
+    TwoDimensionalVector vec_sub = vector2_5_12->subtract(*vector2_3_4);
+    ASSERT_NEAR(2.0, vec_sub.x(), ACCURACY);
+    ASSERT_NEAR(8.0, vec_sub.y(), ACCURACY);
 }
 
 TEST_F(CaseTwoDimensionalVector, Dot)
@@ -65,13 +65,26 @@ TEST_F(CaseTwoDimensionalVector, Dot)
     ASSERT_NEAR(63.0, vector2_3_4->dot(*vector2_5_12), ACCURACY);
 }
 
+TEST_F(CaseTwoDimensionalVector, DotWithVerticalVectorShouldBeZero)
+{
+    TwoDimensionalVector vec_vertical(-4, 3);
+    ASSERT_NEAR(0, vector2_3_4->dot(vec_vertical), ACCURACY);
+}
+
 TEST_F(CaseTwoDimensionalVector, Cross)
 {
     ASSERT_NEAR(16.0, vector2_3_4->cross(*vector2_5_12), ACCURACY);
 }
 
+TEST_F(CaseTwoDimensionalVector, CrossWithParallelShouldBeZero)
+{
+    TwoDimensionalVector vec_parallel(6, 8);
+    ASSERT_NEAR(0, vector2_3_4->cross(vec_parallel), ACCURACY);
+}
+
 TEST_F(CaseTwoDimensionalVector, EuclideanDistance)
 {
     // vector2 (3, 4) with vector(0, 0) distance should be 5
-    ASSERT_NEAR(5.0, vector2_3_4->euclideanDistance(TwoDimensionalVector()), ACCURACY);
+    TwoDimensionalVector vec_zero;
+    ASSERT_NEAR(5.0, vector2_3_4->euclideanDistance(vec_zero), ACCURACY);
 }

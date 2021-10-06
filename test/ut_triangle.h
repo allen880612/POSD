@@ -42,16 +42,22 @@ TEST_F(CaseTriangle, CreateSuccessfully)
 
 TEST_F(CaseTriangle, CreateWithParallelShouldThrowException)
 {
+    TwoDimensionalVector parallel_vec(6.0, 8.0);
+    ASSERT_THROW(Triangle t(*vector2_3_4, parallel_vec), std::invalid_argument);    
+}
+
+TEST_F(CaseTriangle, CreateWithParallelShouldThrowExceptionWithErrorMessage)
+{
+    TwoDimensionalVector parallel_vec(6.0, 8.0);
     try
     {
-        Triangle t(*vector2_3_4, TwoDimensionalVector(6.0, 8.0));
+        Triangle t(*vector2_3_4, parallel_vec);
         FAIL();
     }
-    catch(const std::string e)
+    catch(std::invalid_argument const &e)
     {
-        ASSERT_EQ(TRIANGLE_EXCEPTION_MSG, e);
+        ASSERT_EQ(TRIANGLE_EXCEPTION_MSG, e.what());
     }
-    
 }
 
 TEST_F(CaseTriangle, Info)

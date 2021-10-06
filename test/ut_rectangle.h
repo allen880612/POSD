@@ -11,56 +11,22 @@ TEST(CaseRectangle, CreateSuccessfully)
 
 TEST(CaseRectangle, CreateWithNegativeLength)
 {
-    try
-    {
-        Rectangle r_negative_length(-4.0, 5.0);
-        FAIL();
-    }
-    catch (std::invalid_argument const &e)
-    {
-        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
-    }
+    ASSERT_THROW(Rectangle r_negative_length(-4.0, 5.0), std::invalid_argument);
 }
 
 TEST(CaseRectangle, CreateWithNegativeWidth)
 {
-    try
-    {
-        Rectangle r_negative_width(4.0, -5.0);
-        FAIL();
-    }
-    catch (std::invalid_argument const &e)
-    {
-        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
-    }
+    ASSERT_THROW(Rectangle r_negative_width(4.0, -5.0), std::invalid_argument);
 }
 
 TEST(CaseRectangle, CreateWithZeroLength)
 {
-    try
-    {
-        Rectangle r0_5(0, 5.0);
-        FAIL();
-    }
-    catch (std::invalid_argument const &e)
-    {
-        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
-    }
+    ASSERT_THROW(Rectangle r0_5(0, 5.0), std::invalid_argument);
 }
 
 TEST(CaseRectangle, CreateWithZeroWidth)
 {
-    try
-    {
-        Rectangle r4_0(4.0, 0);
-        FAIL();
-    }
-    catch (std::invalid_argument const &e)
-    {
-        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
-    }
-
-    
+    ASSERT_THROW(Rectangle r4_0(4.0, 0), std::invalid_argument);
 }
 
 TEST(CaseRectangle, Info)
