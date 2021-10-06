@@ -20,6 +20,7 @@ protected:
     {
         delete r3_4;
         delete c10;
+        delete t3_4;
     }
 
     Shape *r3_4;

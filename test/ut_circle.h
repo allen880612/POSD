@@ -16,8 +16,9 @@ TEST(CaseCircle, CreateWWithNegativeRadiusShouldThrowException) {
     }
     catch (std::string e)
     {
-        EXPECT_EQ(CIRCLE_EXCEPTION_MSG, e);
+        ASSERT_EQ(CIRCLE_EXCEPTION_MSG, e);
     }
+    // ASSERT_THROW(Circle c(-1), std::string);
 }
 
 TEST(CaseCircle, CreateWWithZeroRadiusShouldThrowException) {
@@ -28,7 +29,7 @@ TEST(CaseCircle, CreateWWithZeroRadiusShouldThrowException) {
     }
     catch (std::string e)
     {
-        EXPECT_EQ(CIRCLE_EXCEPTION_MSG, e);
+        ASSERT_EQ(CIRCLE_EXCEPTION_MSG, e);
     }
 }
 

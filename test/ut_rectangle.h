@@ -18,7 +18,7 @@ TEST(CaseRectangle, CreateWithNegativeLength)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
+        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -31,7 +31,7 @@ TEST(CaseRectangle, CreateWithNegativeWidth)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
+        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -44,7 +44,7 @@ TEST(CaseRectangle, CreateWithZeroLength)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
+        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
 }
 
@@ -57,8 +57,10 @@ TEST(CaseRectangle, CreateWithZeroWidth)
     }
     catch (std::invalid_argument const &e)
     {
-        EXPECT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
+        ASSERT_EQ(RECTANGLE_EXCEPTION_MSG, e.what());
     }
+
+    
 }
 
 TEST(CaseRectangle, Info)

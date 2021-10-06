@@ -30,6 +30,6 @@ TEST(CaseIOHandler, WriteFile) {
     else
     {
         cout << "File can't open!!" << endl;
-        __assert_fail;
+        FAIL();
     }
 }
