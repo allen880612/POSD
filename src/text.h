@@ -1,6 +1,12 @@
-class Text : public Article {
-   public:
-    Text(std::string text) {}
+#pragma once
+#include "article.h"
 
-    std::string getText() const {};
+class Text : public Article
+{
+public:
+    Text(std::string text) : _text(text) {}
+    std::string getText() const override { return _text; }
+
+private:
+    std::string _text;
 };
