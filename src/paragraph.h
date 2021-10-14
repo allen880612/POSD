@@ -21,22 +21,33 @@ public:
 
     std::string getText() const override
     {
-        std::string result = _text;
+        std::string result = getPrefix() + _text + "\n";
+
         for (Article *article : _articles)
         {
-            result += article->getText() + "\n";
+            result += article->getText();
+            if (article->getLevel() == 0 && article != _articles.back())
+                result += "\n";
         }
+        return result;
+    }
+
+    std::string getPrefix() const
+    {
+        std::string result = "";
+        for (int i = 0; i < _level; i++)
+        {
+            result += "#";
+        }
+        return result + " ";
     }
 
     int getLevel() const override { return _level; }
 
     void add(Article *content) override
     {
-        if (content->getLevel() > _level)
-        {
-            // std::cout << std::string(content->getText()) << std::endl;
+        if (content->getLevel() != 0 && content->getLevel() <= _level)
             throw std::logic_error(std::string("Level of Paragraph added should greater than Paragraph."));
-        }
         _articles.push_back(content);
     }
 
