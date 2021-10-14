@@ -1,7 +1,6 @@
 #pragma once
 #include "iterator.h"
 #include "article.h"
-#include <exception>
 
 template<class ForwardIterator>
 class ArticleIterator : public Iterator {

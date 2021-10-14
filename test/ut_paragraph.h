@@ -11,6 +11,7 @@ protected:
         p1 = new Paragraph(1, "title");
         p2 = new Paragraph(2, "title2");
         p3 = new Paragraph(3, "title3");
+        p3_2 = new Paragraph(3, "sameLevel");
         t1 = new Text("text");
         t2 = new Text("sub text");
         for (int i=1; i<=4; i++)
@@ -32,12 +33,14 @@ protected:
     {
         delete p1;
         delete p3;
+        delete p3_2;
         listItems.clear();
     }
 
     Article* p1;
     Article* p2;
     Article* p3;
+    Article* p3_2;
     Article* t1;
     Article* t2;
     std::vector<Article*> listItems;
@@ -47,16 +50,35 @@ TEST_F(SuiteParagraph, CheckType) {
     ASSERT_EQ(typeid(Paragraph), typeid(*p1));
 }
 
+TEST_F(SuiteParagraph, GetLevel) {
+    ASSERT_EQ(1, p1->getLevel());
+    ASSERT_EQ(2, p2->getLevel());
+    ASSERT_EQ(3, p3->getLevel());
+}
+
 TEST_F(SuiteParagraph, AddLowerLevelShouldThrowException) {
     ASSERT_THROW(p3->add(p1), std::logic_error);
+}
+
+TEST_F(SuiteParagraph, AddSameLevelShouldThrowException) {
+    ASSERT_THROW(p3->add(p3_2), std::logic_error);
 }
 
 TEST_F(SuiteParagraph, ConstructWithNagativeLevelShouldThrowException) {
     ASSERT_THROW(Paragraph p(-1, ""), std::invalid_argument);
 }
 
+TEST_F(SuiteParagraph, ConstructWithLevelZeroShouldThrowException) {
+    ASSERT_THROW(Paragraph p(0, ""), std::invalid_argument);
+}
+
 TEST_F(SuiteParagraph, ConstructWithLevelGratherThanSixShouldThrowException) {
     ASSERT_THROW(Paragraph p(7, ""), std::invalid_argument);
+}
+
+TEST_F(SuiteParagraph, getText) {
+    std::string expected = "### title3\n";
+    ASSERT_EQ(expected, p3->getText());
 }
 
 TEST_F(SuiteParagraph, getTextShouldContainChildenContent) {
