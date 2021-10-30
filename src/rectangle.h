@@ -1,6 +1,8 @@
 #pragma once
 #include "shape.h"
+#include "iterator/null_iterator.h"
 #include <stdexcept>
+
 
 class Rectangle : public Shape
 {
@@ -20,7 +22,7 @@ public:
         sprintf(buffer, "Rectangle (%.2lf %.2lf)", _length, _width);
         return buffer;
     }
-    Iterator* createIterator() override { }
+    Iterator* createIterator() override { return new NullIterator(); }
 
 private:
     double _length;

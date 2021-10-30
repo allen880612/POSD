@@ -75,3 +75,15 @@ TEST_F(CaseTriangle, Area)
 {
     ASSERT_NEAR(6.0, t34->area(), ACCURACY);
 }
+
+TEST_F(CaseTriangle, AddShouldThrowException) {
+    ASSERT_ANY_THROW(t34->addShape(nullptr));
+}
+
+TEST_F(CaseTriangle, DeleteShouldThrowException) {
+    ASSERT_ANY_THROW(t34->deleteShape(nullptr));
+}
+
+TEST_F(CaseTriangle, IsDoneOfCreateIteratorShouldBeTrue) {
+    ASSERT_TRUE(t34->createIterator()->isDone());
+}

@@ -13,7 +13,9 @@ public:
 
     Shape* currentItem() const override 
     { 
-        return *_current; 
+        if(isDone())
+            throw std::string("iterator is current end");
+        return *_current;
     }
 
     void next() override 

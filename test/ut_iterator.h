@@ -98,15 +98,21 @@ TEST_F(SuiteIterator, CompoundIteratorNextShouldThrowExceptionWhileIsDone) {
     ASSERT_ANY_THROW(it.next());
 }
 
-TEST_F(SuiteIterator, CompoundIteratorIsDoneShouldBeFalseBeforeCurrentNotTheLastElement) {
+TEST_F(SuiteIterator, CompoundIteratorCurrentItemShouldThrowExceptionWhileIsDone) {
+    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    
+    it.next();
+    it.next();
+    ASSERT_TRUE(it.isDone());
+    ASSERT_ANY_THROW(it.currentItem());
+}
+
+TEST_F(SuiteIterator, CompoundIteratorIsDone) {
     CompoundShapeIterator it(shapes.begin(), shapes.end());
     
     ASSERT_FALSE(it.isDone());
-    it.next();
+    ASSERT_NO_THROW(it.next());
     ASSERT_FALSE(it.isDone());
-    it.next();
+    ASSERT_NO_THROW(it.next());
     ASSERT_TRUE(it.isDone());
-    ASSERT_EQ(*(shapes.end()), it.currentItem());
 }
-
-        

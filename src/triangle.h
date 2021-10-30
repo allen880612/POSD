@@ -1,6 +1,7 @@
 #pragma once
 #include "shape.h"
 #include <iostream>
+#include "iterator/null_iterator.h"
 #include "two_dimensional_vector.h"
 
 class Triangle : public Shape
@@ -31,7 +32,7 @@ public:
         sprintf(buffer, "Triangle (%s %s)", _vectors[1].info().c_str(), _vectors[2].info().c_str());
         return buffer;
     }
-    Iterator* createIterator() override { }
+    Iterator* createIterator() override { return new NullIterator(); }
 
 private:
     TwoDimensionalVector _vectors[3];

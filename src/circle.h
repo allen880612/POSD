@@ -1,5 +1,6 @@
 #pragma once
 #include "shape.h"
+#include "iterator/null_iterator.h"
 #include <math.h>
 
 class Circle : public Shape
@@ -23,7 +24,7 @@ public:
         return buffer;
     }
 
-    Iterator* createIterator() override { }
+    Iterator* createIterator() override { return new NullIterator(); }
 
 private:
     double _radius;
