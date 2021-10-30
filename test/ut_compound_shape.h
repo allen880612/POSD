@@ -3,6 +3,7 @@
 #include "../src/compound_shape.h"
 #include "../src/circle.h"
 #include "../src/rectangle.h"
+#include "../src/iterator/iterator.h"
 #include <cmath>
 
 #define ACCURACY 0.001
@@ -35,13 +36,28 @@ TEST_F(CaseCompoundShape, CreateSuccessfully)
     ASSERT_NO_THROW(CompoundShape());
 }
 
-// TEST_F(CaseCompoundShape, Add)
-// {
-//     cs->addShape(c1);
-//     cs->addShape(r45);
+TEST_F(CaseCompoundShape, Add)
+{
+    Shape* c2 = new Circle(2.0);
+    cs->addShape(c2);
 
-//     ASSERT_EQ(c1, cs->area());
-// }
+    Iterator* it = cs->createIterator(); 
+    ASSERT_EQ(c1, it->currentItem());
+    it->next();
+    ASSERT_EQ(r45, it->currentItem());
+    it->next();
+    ASSERT_EQ(c2, it->currentItem());
+}
+
+TEST_F(CaseCompoundShape, Delete)
+{
+    cs->deleteShape(c1);
+    Iterator* it = cs->createIterator(); 
+
+    ASSERT_EQ(r45, it->currentItem());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+}
 
 TEST_F(CaseCompoundShape, Area)
 {

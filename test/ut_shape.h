@@ -52,3 +52,10 @@ TEST_F(CaseShape, Info)
     ASSERT_EQ(circle, c10->info());
     ASSERT_EQ(triangle, t3_4->info());
 }
+
+TEST_F(CaseShape, CheckType)
+{
+    ASSERT_EQ(typeid(Rectangle), typeid(*r3_4));
+    ASSERT_EQ(typeid(Circle), typeid(*c10));
+    ASSERT_EQ(typeid(Triangle), typeid(*t3_4));
+}
