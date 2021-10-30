@@ -1,3 +1,4 @@
+#pragma once
 #include "shape.h"
 
 template <class ShapeConstraint>

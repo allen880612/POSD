@@ -1,3 +1,5 @@
+#pragma once
+
 class Shape;
 class Iterator {
 public:

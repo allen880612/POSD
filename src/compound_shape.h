@@ -1,6 +1,9 @@
 #pragma once
 #include <list>
 #include "shape.h"
+#include "iterator/compound_iterator.h"
+
+#define CompoundShapeIterator CompoundIterator<std::list<Shape*>::iterator>
 
 class CompoundShape : public Shape {
 public:
@@ -43,7 +46,7 @@ public:
         return "CompoundShape\n{\n" + contetnt + "}";
     }
 
-    Iterator* createIterator() override { }
+    Iterator* createIterator() override { return new CompoundShapeIterator(_shpaes.begin(),_shpaes.end()); }
 
     void addShape(Shape* shape) override { _shpaes.push_back(shape); }
 
