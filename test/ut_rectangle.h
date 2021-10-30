@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/rectangle.h"
 
 #define RECTANGLE_EXCEPTION_MSG std::string("Rectangle created by positive double length and width.")
@@ -18,8 +17,12 @@ protected:
         delete r4_5;
     }
 
-    Rectangle* r4_5;
+    Shape* r4_5;
 };
+
+TEST_F(CaseRectangle, RectangleShouldBeAShape) {
+    ASSERT_EQ(typeid(Rectangle), typeid(*r4_5));
+}
 
 TEST_F(CaseRectangle, CreateSuccessfully)
 {

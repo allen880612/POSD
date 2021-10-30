@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/triangle.h"
 
 #define TRIANGLE_EXCEPTION_MSG std::string("Triangle created by two non-parallel two dimensional _vectors.")
@@ -32,8 +31,12 @@ protected:
     TwoDimensionalVector *vector2_3_4;
     TwoDimensionalVector *vector2_n3_n4;
 
-    Triangle* t34;
+    Shape* t34;
 };
+
+TEST_F(CaseTriangle, TriangleShouldBeAShape) {
+    ASSERT_EQ(typeid(Triangle), typeid(*t34));
+}
 
 TEST_F(CaseTriangle, CreateSuccessfully)
 {

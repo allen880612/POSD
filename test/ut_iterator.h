@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include <list>
 #include "../src/iterator/null_iterator.h"
 #include "../src/iterator/compound_iterator.h"
@@ -35,6 +34,16 @@ protected:
     Shape* c1;
     Shape* r45;
 };
+
+TEST_F(SuiteIterator, NullIteratorIsAIterator) {
+    ASSERT_EQ(typeid(NullIterator), typeid(*nullIterator));
+}
+
+TEST_F(SuiteIterator, CompoundIteratorIsAIterator) {
+    
+    Iterator* it = new CompoundShapeIterator(shapes.begin(), shapes.end());
+    ASSERT_EQ(typeid(CompoundShapeIterator), typeid(*it));
+}
 
 TEST_F(SuiteIterator, NullIteratorCallFirstShouldThrowException) {
     ASSERT_ANY_THROW(nullIterator->first());

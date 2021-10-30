@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/circle.h"
 
 #define CIRCLE_EXCEPTION_MSG std::string("Circle created by positive double radius.")
@@ -18,8 +17,12 @@ protected:
         delete c10;
     }
 
-    Circle* c10;
+    Shape* c10;
 };
+
+TEST_F(CaseCircle, CircleShouldBeAShape) {
+    ASSERT_EQ(typeid(Circle), typeid(*c10));
+}
 
 TEST_F(CaseCircle, CreateSuccessfully) {
     ASSERT_NO_THROW(Circle s(10.0));

@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/two_dimensional_vector.h"
 
 #define ACCURACY 0.001

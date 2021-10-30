@@ -1,8 +1,8 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/compound_shape.h"
 #include "../src/circle.h"
 #include "../src/rectangle.h"
+#include "../src/utility.h"
 #include "../src/iterator/iterator.h"
 #include <cmath>
 
@@ -57,6 +57,20 @@ TEST_F(CaseCompoundShape, Delete)
     ASSERT_EQ(r45, it->currentItem());
     it->next();
     ASSERT_TRUE(it->isDone());
+}
+
+TEST_F(CaseCompoundShape, DeleteSelectedShape)
+{   
+    // delete c1 by area
+    Shape* result = selectShape(cs, [&] (Shape* shape) -> bool {
+        return typeid(*shape) == typeid(Circle);
+    });
+
+    cs->deleteShape(result);
+    Iterator* it = cs->createIterator();
+
+    // first item is r45, instead of c1 now
+    ASSERT_EQ(r45, it->currentItem());
 }
 
 TEST_F(CaseCompoundShape, Area)

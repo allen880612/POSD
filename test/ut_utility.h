@@ -1,8 +1,8 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/iterator/iterator.h"
 #include "../src/circle.h"
 #include "../src/rectangle.h"
+#include "../src/triangle.h"
 #include "../src/compound_shape.h"
 #include "../src/utility.h"
 
@@ -60,3 +60,9 @@ TEST_F(CaseUtility, SelectShapeByPerimeter) {
     ASSERT_EQ(c1, result);
 }
 
+TEST_F(CaseUtility, SelectShapeNoMatchShouldGetNull) {
+    Shape* result = selectShape(cs, [&] (Shape* shape) -> bool {
+        return typeid(Triangle) == typeid(*shape);
+    });
+    ASSERT_EQ(nullptr, result);
+}
