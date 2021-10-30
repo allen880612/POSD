@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 class Iterator;
 class Shape {
@@ -7,6 +8,6 @@ class Shape {
     virtual double perimeter() const = 0;
     virtual std::string info() const = 0;
     virtual Iterator* createIterator() = 0;
-    virtual void addShape(Shape* shape) { }
+    virtual void addShape(Shape* shape) {  }
     virtual void deleteShape(Shape* shape) { }
 };
