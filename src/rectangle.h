@@ -20,6 +20,7 @@ public:
         sprintf(buffer, "Rectangle (%.2lf %.2lf)", _length, _width);
         return buffer;
     }
+    Iterator* createIterator() override { }
 
 private:
     double _length;

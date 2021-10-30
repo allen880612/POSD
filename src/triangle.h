@@ -31,6 +31,7 @@ public:
         sprintf(buffer, "Triangle (%s %s)", _vectors[1].info().c_str(), _vectors[2].info().c_str());
         return buffer;
     }
+    Iterator* createIterator() override { }
 
 private:
     TwoDimensionalVector _vectors[3];
