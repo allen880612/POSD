@@ -11,7 +11,7 @@ SHAPE: src/shape.h src/rectangle.h src/circle.h src/triangle.h \
 
 ITERATOR: src/iterator.h src/null_iterator.h src/compound_iterator.h
 
-VISITOR: src/shape_visitor.h src/shape_visitor.cpp
+VISITOR: src/visitor.h src/shape_visitor.h src/shape_visitor.cpp
 
 SRC= $(SHAPE) $(ITERATOR)
 

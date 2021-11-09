@@ -31,7 +31,7 @@ protected:
     Shape* cs;
 };
 
-TEST(CaseVisitor, SelectShapeOnCircleNotFound) {
+TEST_F(CaseVisitor, SelectShapeOnCircleNotFound) {
     Circle* c1 = new Circle(1.0);
     
     SelectShapeVisitor* visitor = new SelectShapeVisitor([](Shape* shape) {
@@ -46,34 +46,34 @@ TEST(CaseVisitor, SelectShapeOnCircleNotFound) {
     delete visitor;
 } 
 
-// TEST_F(CaseVisitor, SimpleInfo)
-// {
-//     std::string expected = "CompoundShape\n"
-//                            "{\n"
-//                            "  " + c1->info() +"\n"
-//                            "  " + r45->info() + "\n"
-//                            "}";
-//     ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
-//     visitor->visitCompoundShape((CompoundShape*)cs);
+TEST_F(CaseVisitor, SimpleInfo)
+{
+    std::string expected = "CompoundShape\n"
+                           "{\n"
+                           "  " + c1->info() +"\n"
+                           "  " + r45->info() + "\n"
+                           "}";
+    ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
+    visitor->visitCompoundShape((CompoundShape*)cs);
 
-//     ASSERT_EQ(expected, visitor->getResult());
-// }
+    ASSERT_EQ(expected, visitor->getResult());
+}
 
-// TEST_F(CaseVisitor, ComplexInfo)
-// {
-//     Shape* c = new Circle(1.1);
-//     Shape* r = new Rectangle(3.14 ,4);
-//     std::string expected = "CompoundShape\n{\n"
-//                          + c1->info() + "\n"
-//                          + r45->info() + "\n"
-//                          + "CompoundShape\n{\n"
-//                          + c->info() + "\n"
-//                          + r->info() + "\n"
-//                          + "}\n"
-//                          + "}";
+TEST_F(CaseVisitor, ComplexInfo)
+{
+    Shape* c = new Circle(1.1);
+    Shape* r = new Rectangle(3.14 ,4);
+    std::string expected = "CompoundShape\n{\n"
+                           "  " + c1->info() + "\n"
+                           "  " + r45->info() + "\n"
+                           "  CompoundShape\n{\n"
+                           "    " + c->info() + "\n"
+                           "    " + r->info() + "\n"
+                           "  }\n"
+                           "}";
 
-//     Shape* cs2 = new CompoundShape();
-//     cs2->addShape(c);
-//     cs2->addShape(r);
-//     cs->addShape(cs2);
-// }
+    Shape* cs2 = new CompoundShape();
+    cs2->addShape(c);
+    cs2->addShape(r);
+    cs->addShape(cs2);
+}

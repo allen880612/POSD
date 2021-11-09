@@ -5,6 +5,7 @@ class Iterator;
 class Visitor;
 class Shape {
 public:
+    virtual ~Shape() {};
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
     virtual std::string info() const = 0;

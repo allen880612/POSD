@@ -1,6 +1,6 @@
 #pragma once
 #include "shape.h"
-#include "shape_visitor.h"
+#include "visitor.h"
 #include "iterator/null_iterator.h"
 #include <math.h>
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <list>
 #include "shape.h"
-#include "shape_visitor.h"
+#include "visitor.h"
 #include "iterator/compound_iterator.h"
 
 #define CompoundShapeIterator CompoundIterator<std::list<Shape*>::iterator>
@@ -55,7 +55,7 @@ public:
 
     void accept(Visitor* visitor) override 
     {
-        // visitor->visitCompoundShape(this);
+        visitor->visitCompoundShape(this);
     }
 
 private:
