@@ -26,7 +26,7 @@ public:
     Iterator* createIterator() override { return new NullIterator(); }
     void accept(Visitor* visitor) override 
     {
-        visitor->visitRectangle(this);
+        // visitor->visitRectangle(this);
     }
 
 private:

@@ -31,18 +31,33 @@ protected:
     Shape* cs;
 };
 
-TEST_F(CaseVisitor, SimpleInfo)
-{
-    std::string expected = "CompoundShape\n"
-                           "{\n"
-                           "  " + c1->info() +"\n"
-                           "  " + r45->info() + "\n"
-                           "}";
-    ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
-    visitor->visitCompoundShape((CompoundShape*)cs);
+TEST(CaseVisitor, SelectShapeOnCircleNotFound) {
+    Circle* c1 = new Circle(1.0);
+    
+    SelectShapeVisitor* visitor = new SelectShapeVisitor([](Shape* shape) {
+        return shape->area() > 20.0 && shape->area() < 30.0;
+    });
+    // c1->accept(visitor);
+    visitor->visitCircle(c1);
+    Shape* result = visitor->getShape();
 
-    ASSERT_EQ(expected, visitor->getResult());
-}
+    ASSERT_EQ(nullptr, result);
+    delete c1;
+    delete visitor;
+} 
+
+// TEST_F(CaseVisitor, SimpleInfo)
+// {
+//     std::string expected = "CompoundShape\n"
+//                            "{\n"
+//                            "  " + c1->info() +"\n"
+//                            "  " + r45->info() + "\n"
+//                            "}";
+//     ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
+//     visitor->visitCompoundShape((CompoundShape*)cs);
+
+//     ASSERT_EQ(expected, visitor->getResult());
+// }
 
 // TEST_F(CaseVisitor, ComplexInfo)
 // {

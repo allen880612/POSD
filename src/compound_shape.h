@@ -55,7 +55,7 @@ public:
 
     void accept(Visitor* visitor) override 
     {
-        visitor->visitCompoundShape(this);
+        // visitor->visitCompoundShape(this);
     }
 
 private:

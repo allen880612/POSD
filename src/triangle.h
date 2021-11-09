@@ -35,7 +35,7 @@ public:
     Iterator *createIterator() override { return new NullIterator(); }
     void accept(Visitor* visitor) override 
     {
-        visitor->visitTriangle(this);
+        // visitor->visitTriangle(this);
     }
 
 private:

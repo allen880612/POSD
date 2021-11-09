@@ -1,54 +1,30 @@
 #pragma once
-// #include "visitor.h"
-#include <string>
 
-// template <class ShapeConstrain>
-// class SelectShapeVisitor : public Visitor
-// {
-// public:
-//     SelectShapeVisitor(ShapeConstrain constrain) : _result(nullptr), _constrain(constrain) {}
-//     ~SelectShapeVisitor(){};
-//     void visitCircle(Circle *circle);
-//     void visitRectangle(Rectangle *square);
-//     void visitTriangle(Triangle *triangle);
-//     void visitCompoundShape(CompoundShape *cs);
-
-// private:
-//     Shape *_result;
-//     ShapeConstrain _constrain;
-// };
-
-class Circle;
+class Shape; 
+class Circle; 
 class Rectangle;
-class Triangle;
-class CompoundShape;
+class CompoundShape; 
 
-class Visitor
-{
+class Visitor {
 public:
     virtual ~Visitor() {}
-    virtual void visitCircle(Circle *circle) = 0;
-    virtual void visitRectangle(Rectangle *square) = 0;
-    virtual void visitTriangle(Triangle *triangle) = 0;
-    virtual void visitCompoundShape(CompoundShape *cs) = 0;
+    virtual void visitCircle(Circle* c) = 0;
+
 protected:
     Visitor() {}
 };
 
-class ShapeInfoVisitor : public Visitor
-{
+typedef bool (*ShapeConstraint)(Shape*); // pointer to function
+class SelectShapeVisitor: public Visitor {
 public:
-    ShapeInfoVisitor() : _indentLevel(0), _result(nullptr) {}
-    // ~ShapeInfoVisitor() override {}
-    void visitCircle(Circle *circle);
-    void visitRectangle(Rectangle *square);
-    void visitTriangle(Triangle *triangle);
-    void visitCompoundShape(CompoundShape *cs);
-    std::string getResult() { return _result; }
+    SelectShapeVisitor(): _result(nullptr), _constraint(nullptr) {}
+    SelectShapeVisitor(ShapeConstraint constraint): _result(nullptr), _constraint(constraint) {}
+    void visitCircle(Circle* c);
+    Shape* getShape();
 
 private:
-    std::string getIndent();
-
-    std::string _result;
-    int _indentLevel;
+    Shape* _result;
+    ShapeConstraint _constraint;
 };
+
+
