@@ -1,5 +1,6 @@
 #pragma once
 #include "shape.h"
+#include "shape_visitor.h"
 #include "iterator/null_iterator.h"
 #include <stdexcept>
 
@@ -23,6 +24,10 @@ public:
         return buffer;
     }
     Iterator* createIterator() override { return new NullIterator(); }
+    void accept(Visitor* visitor) override 
+    {
+        visitor->visitRectangle(this);
+    }
 
 private:
     double _length;

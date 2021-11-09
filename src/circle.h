@@ -1,5 +1,6 @@
 #pragma once
 #include "shape.h"
+#include "shape_visitor.h"
 #include "iterator/null_iterator.h"
 #include <math.h>
 
@@ -17,7 +18,7 @@ public:
     
     double perimeter() const { return 2 * _radius * M_PI; }
     
-    std::string info() const 
+    std::string info() const
     { 
         char buffer[100];
         sprintf(buffer, "Circle (%.2lf)", _radius);
@@ -25,6 +26,11 @@ public:
     }
 
     Iterator* createIterator() override { return new NullIterator(); }
+    
+    void accept(Visitor* visitor) override 
+    {
+        visitor->visitCircle(this);
+    }
 
 private:
     double _radius;

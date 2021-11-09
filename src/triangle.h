@@ -1,6 +1,6 @@
 #pragma once
 #include "shape.h"
-#include <iostream>
+#include "shape_visitor.h"
 #include "iterator/null_iterator.h"
 #include "two_dimensional_vector.h"
 
@@ -15,24 +15,28 @@ public:
 
         if (!isTriangle())
             throw std::invalid_argument(std::string("Triangle created by two non-parallel two dimensional _vectors."));
-        
+
         _sides[0] = _vectors[0].euclideanDistance(_vectors[1]);
         _sides[1] = _vectors[1].euclideanDistance(_vectors[2]);
         _sides[2] = _vectors[2].euclideanDistance(_vectors[0]);
     }
     double perimeter() const { return _sides[0] + _sides[1] + _sides[2]; }
-    double area() const 
+    double area() const
     {
-         double s = perimeter() / 2;
-         return sqrt(s * (s - _sides[0]) * (s - _sides[1]) * (s - _sides[2]));
+        double s = perimeter() / 2;
+        return sqrt(s * (s - _sides[0]) * (s - _sides[1]) * (s - _sides[2]));
     }
-    std::string info() const 
-    { 
+    std::string info() const
+    {
         char buffer[100];
         sprintf(buffer, "Triangle (%s %s)", _vectors[1].info().c_str(), _vectors[2].info().c_str());
         return buffer;
     }
-    Iterator* createIterator() override { return new NullIterator(); }
+    Iterator *createIterator() override { return new NullIterator(); }
+    void accept(Visitor* visitor) override 
+    {
+        visitor->visitTriangle(this);
+    }
 
 private:
     TwoDimensionalVector _vectors[3];
