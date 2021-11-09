@@ -4,6 +4,7 @@
 #include "../src/rectangle.h"
 #include "../src/utility.h"
 #include "../src/iterator/iterator.h"
+#include "../src/shape_visitor.h"
 #include <cmath>
 
 #define ACCURACY 0.001
@@ -109,4 +110,41 @@ TEST_F(CaseCompoundShape, ComplexInfo)
     cs2->addShape(c);
     cs2->addShape(r);
     cs->addShape(cs2);
+}
+
+TEST_F(CaseCompoundShape, SimpleInfoByVisitor)
+{
+    std::string expected = "CompoundShape\n"
+                           "{\n"
+                           "  " + c1->info() +"\n"
+                           "  " + r45->info() + "\n"
+                           "}";
+    ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
+    cs->accept(visitor);
+    ASSERT_EQ(expected, visitor->getResult());
+    delete visitor;
+}
+
+TEST_F(CaseCompoundShape, ComplexInfoByVisitor)
+{
+    Shape* c = new Circle(1.1);
+    Shape* r = new Rectangle(3.14 ,4);
+    std::string expected = "CompoundShape\n{\n"
+                           "  " + c1->info() + "\n"
+                           "  " + r45->info() + "\n"
+                           "  CompoundShape\n{\n"
+                           "    " + c->info() + "\n"
+                           "    " + r->info() + "\n"
+                           "  }\n"
+                           "}";
+
+    Shape* cs2 = new CompoundShape();
+    cs2->addShape(c);
+    cs2->addShape(r);
+    cs->addShape(cs2);
+
+    ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
+    cs->accept(visitor);
+    ASSERT_EQ(expected, visitor->getResult());
+    delete visitor;
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include <gtest/gtest.h>
 #include "../src/compound_shape.h"
 #include "../src/circle.h"
 #include "../src/rectangle.h"
@@ -13,6 +12,7 @@ class CaseVisitor : public ::testing::Test
 protected:
     void SetUp() override
     {
+        shapeInfoVisitor = new ShapeInfoVisitor();
         c1 = new Circle(1.0);
         r45 = new Rectangle(4.0, 5.0);
         cs = new CompoundShape();
@@ -24,11 +24,13 @@ protected:
     void TearDown() override
     {
         delete cs;
+        delete shapeInfoVisitor;
     }
 
     Shape* c1;
     Shape* r45;
     Shape* cs;
+    ShapeInfoVisitor* shapeInfoVisitor;
 };
 
 TEST_F(CaseVisitor, SelectShapeOnCircleNotFound) {
@@ -44,7 +46,19 @@ TEST_F(CaseVisitor, SelectShapeOnCircleNotFound) {
     ASSERT_EQ(nullptr, result);
     delete c1;
     delete visitor;
-} 
+}
+
+TEST_F(CaseVisitor, SelectShapeOnCompoundShapeByType) {
+    
+    SelectShapeVisitor* visitor = new SelectShapeVisitor([](Shape* shape) {
+        return typeid(Rectangle) == typeid(*shape);
+    });
+
+    visitor->visitCompoundShape((CompoundShape*)cs);
+    Shape* result = visitor->getShape();
+
+    ASSERT_EQ(r45, result);
+}
 
 TEST_F(CaseVisitor, SimpleInfo)
 {
@@ -53,10 +67,10 @@ TEST_F(CaseVisitor, SimpleInfo)
                            "  " + c1->info() +"\n"
                            "  " + r45->info() + "\n"
                            "}";
-    ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
-    visitor->visitCompoundShape((CompoundShape*)cs);
+    
+    shapeInfoVisitor->visitCompoundShape((CompoundShape*)cs);
 
-    ASSERT_EQ(expected, visitor->getResult());
+    ASSERT_EQ(expected, shapeInfoVisitor->getResult());
 }
 
 TEST_F(CaseVisitor, ComplexInfo)
@@ -76,4 +90,7 @@ TEST_F(CaseVisitor, ComplexInfo)
     cs2->addShape(c);
     cs2->addShape(r);
     cs->addShape(cs2);
+
+    shapeInfoVisitor->visitCompoundShape((CompoundShape*)cs);
+    ASSERT_EQ(expected, shapeInfoVisitor->getResult());
 }
