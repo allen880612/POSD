@@ -2,21 +2,6 @@
 #include "visitor.h"
 #include <string>
 
-// class Shape; 
-// class Circle; 
-// class Rectangle;
-// class Triangle;
-// class CompoundShape; 
-
-// class Visitor {
-// public:
-//     virtual ~Visitor() {}
-//     virtual void visitCircle(Circle* c) = 0;
-
-// protected:
-//     Visitor() {}
-// };
-
 class Shape;
 typedef bool (*ShapeConstraint)(Shape*); // pointer to function
 class SelectShapeVisitor: public Visitor {
