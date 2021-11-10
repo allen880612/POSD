@@ -77,10 +77,12 @@ TEST_F(CaseVisitor, ComplexInfo)
 {
     Shape* c = new Circle(1.1);
     Shape* r = new Rectangle(3.14 ,4);
-    std::string expected = "CompoundShape\n{\n"
+    std::string expected = "CompoundShape\n"
+                           "{\n"
                            "  " + c1->info() + "\n"
                            "  " + r45->info() + "\n"
-                           "  CompoundShape\n{\n"
+                           "  CompoundShape\n"
+                           "  {\n"
                            "    " + c->info() + "\n"
                            "    " + r->info() + "\n"
                            "  }\n"
