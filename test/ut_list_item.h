@@ -35,3 +35,15 @@ TEST_F(SuiteListItem, GetLevelShouldBeZero) {
 TEST_F(SuiteListItem, GetText) {
     ASSERT_EQ(std::string("- content"), listItem->getText());
 }
+
+TEST_F(SuiteListItem, CreateIteratorShouldBeNulliterator) {
+    Iterator* it = listItem->createIterator();
+    ASSERT_EQ(typeid(NullIterator), typeid(*it));
+    delete it;
+}
+
+TEST_F(SuiteListItem, IteratorIsdoneShouldBeTrue) {
+    Iterator* it = listItem->createIterator();
+    ASSERT_TRUE(it->isDone());
+    delete it;
+}

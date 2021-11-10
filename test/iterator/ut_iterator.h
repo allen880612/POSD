@@ -2,8 +2,9 @@
 #include <list>
 #include "../src/iterator/null_iterator.h"
 #include "../src/iterator/compound_iterator.h"
-#include "../src/circle.h"
-#include "../src/rectangle.h"
+#include "../src/paragraph.h"
+#include "../src/list_item.h"
+#include "../src/text.h"
 
 #define CompoundShapeIterator CompoundIterator<std::list<Shape*>::iterator>
 

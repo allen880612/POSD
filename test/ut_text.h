@@ -41,3 +41,9 @@ TEST_F(SuiteText, CreateIteratorShouldBeNulliterator) {
     ASSERT_EQ(typeid(NullIterator), typeid(*it));
     delete it;
 }
+
+TEST_F(SuiteText, IteratorIsdoneShouldBeTrue) {
+    Iterator* it = text->createIterator();
+    ASSERT_TRUE(it->isDone());
+    delete it;
+}

@@ -2,6 +2,7 @@
 #include "../src/paragraph.h"
 #include "../src/list_item.h"
 #include "../src/text.h"
+#include "../src/iterator/compound_iterator.h"
 
 class SuiteParagraph : public ::testing::Test
 {
@@ -84,4 +85,20 @@ TEST_F(SuiteParagraph, getText) {
 TEST_F(SuiteParagraph, getTextShouldContainChildenContent) {
     std::string expected = "# title\n- list1\n- list2\ntext\n## title2\n- list3\n- list4\nsub text";
     ASSERT_EQ(expected, p1->getText());
+}
+
+TEST_F(SuiteParagraph, iteratorShouldContainCorrectItem) {
+    Iterator* it = p1->createIterator();
+
+    it->first();
+    ASSERT_EQ(listItems[0], it->currentItem());
+    it->next();
+    ASSERT_EQ(listItems[1], it->currentItem());
+    it->next();
+    ASSERT_EQ(t1, it->currentItem());
+    it->next();
+    ASSERT_EQ(p2, it->currentItem());
+    it->next();
+    ASSERT_TRUE(it->isDone());
+    delete it;
 }
