@@ -5,7 +5,7 @@
 #include "./ut_list_item.h"
 #include "./ut_paragraph.h"
 #include "./ut_text.h"
-// #include "./visitor/ut_html_visitor.h"
+#include "./visitor/ut_html_visitor.h"
 #include "./visitor/ut_markdown_visitor.h"
 
 

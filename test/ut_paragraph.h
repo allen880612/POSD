@@ -3,6 +3,7 @@
 #include "../src/list_item.h"
 #include "../src/text.h"
 #include "../src/iterator/compound_iterator.h"
+#include <vector>
 
 class SuiteParagraph : public ::testing::Test
 {

@@ -2,7 +2,6 @@
 #include "../../src/paragraph.h"
 #include "../../src/list_item.h"
 #include "../../src/text.h"
-#include "../../src/iterator/compound_iterator.h"
 #include "../../src/visitor/markdown_visitor.h"
 #include <vector>
 
