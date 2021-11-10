@@ -1,33 +1,24 @@
 .PHONY: clean test
 
-all: directories obj/shape_visitor.o ut_main
+all: directories ut_main
 
-TEST: test/ut_rectangle.h test/ut_circle.h test/ut_triangle.h \
-	  test/ut_two_dimensional_vector.h test/compound_shape.h test/iterator.h \
-	  test/ut_utility.h test/ut_visitor.h
+TEST= test/ut_paragraph.h test/ut_list_item.h test/ut_text.h test/ut_main.cpp \
+	  test/ut_list_item.h test/iterator/ut_null_iterator.h \
+	  test/iterator/ut_compound_iterator.h test/visitor/ut_markdown_visitor.h \
+	  test/visitor/ut_html_visitor.h
+SRC= src/article.h src/list_item.h src/paragraph.h src/text.h \
+	 src/iterator/iterator.h src/iterator/compound_iterator.h \
+	 src/iterator/null_iterator.h src/visitor/article_visitor.h \
+	 src/visitor/html_visitor.h src/visitor/markdown_visitor.h
 
-SHAPE: src/shape.h src/rectangle.h src/circle.h src/triangle.h \
-	   src/two_dimensional_vector.h src/compound_shape.h src/utility.h
-
-ITERATOR: src/iterator.h src/null_iterator.h src/compound_iterator.h
-
-VISITOR: src/visitor.h src/shape_visitor.h src/shape_visitor.cpp
-
-SRC= $(SHAPE) $(ITERATOR)
-
-OBJ= obj/shape_visitor.o
-
-ut_main: test/ut_main.cpp $(TEST) $(SRC) $(OBJ)
-	g++ -std=c++11 -Wfatal-errors test/ut_main.cpp $(OBJ) -o bin/ut_all -lgtest -lpthread
-
-obj/shape_visitor.o: src/shape_visitor.cpp src/shape_visitor.h
-	g++ -std=c++11 -Wfatal-errors -Wall -c src/shape_visitor.cpp -o obj/shape_visitor.o
+ut_main: test/ut_main.cpp $(TEST) $(SRC)
+	g++ -std=c++11 test/ut_main.cpp -o bin/ut_all -lgtest -lpthread
 
 directories:
-	mkdir -p bin obj
+	mkdir -p bin
 
 clean:
-	rm -rf bin obj
-	
+	rm -rf bin
+
 test: all
 	bin/ut_all
