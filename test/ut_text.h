@@ -1,5 +1,6 @@
 #pragma once
 #include "../src/text.h"
+#include "../src/iterator/null_iterator.h"
 
 class SuiteText : public ::testing::Test
 {
@@ -24,7 +25,7 @@ TEST_F(SuiteText, CheckType) {
 }
 
 TEST_F(SuiteText, AddOnTextShouldThrowException) {
-    ASSERT_THROW(text->add(textAdded), std::logic_error);
+    ASSERT_ANY_THROW(text->add(textAdded));
 }
 
 TEST_F(SuiteText, GetLevelShouldBeZero) {
@@ -33,4 +34,10 @@ TEST_F(SuiteText, GetLevelShouldBeZero) {
 
 TEST_F(SuiteText, GetText) {
     ASSERT_EQ(std::string("content"), text->getText());
+}
+
+TEST_F(SuiteText, CreateIteratorShouldBeNulliterator) {
+    Iterator* it = text->createIterator();
+    ASSERT_EQ(typeid(NullIterator), typeid(*it));
+    delete it;
 }

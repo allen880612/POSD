@@ -25,7 +25,7 @@ TEST_F(SuiteListItem, CheckType) {
 }
 
 TEST_F(SuiteListItem, AddOnTextShouldThrowException) {
-    ASSERT_THROW(listItem->add(listItemAdded), std::logic_error);
+    ASSERT_ANY_THROW(listItem->add(listItemAdded));
 }
 
 TEST_F(SuiteListItem, GetLevelShouldBeZero) {

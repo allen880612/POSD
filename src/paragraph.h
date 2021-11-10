@@ -1,7 +1,10 @@
 #pragma once
-#include <vector>
+#include <list>
 #include "article.h"
+#include "visitor/article_visitor.h"
+#include "iterator/compound_iterator.h"
 
+#define CompoundArticleIterator CompoundIterator<std::list<Article*>::iterator>
 class Paragraph : public Article
 {
 public:
@@ -51,8 +54,15 @@ public:
         _articles.push_back(content);
     }
 
+    Iterator* createIterator() override { return new CompoundIterator<std::list<Article*>::iterator>(_articles.begin(),_articles.end()); }
+
+    void accept(ArticleVisitor* visitor) override 
+    {
+        visitor->visitParagraph(this);
+    }
+
 private:
     int _level;
     std::string _text;
-    std::vector<Article* > _articles;
+    std::list<Article*> _articles;
 };
