@@ -1,6 +1,6 @@
 #pragma once
 
-class Artilce;
+class Article;
 class Iterator {
    public:
     virtual ~Iterator(){};
