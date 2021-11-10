@@ -5,7 +5,7 @@
 #include "iterator/compound_iterator.h"
 
 #define CompoundShapeIterator CompoundIterator<std::list<Shape*>::iterator>
-
+// typedef CompoundIterator<std::list<Shape*>::iterator> CompoundShapeIterator;
 class CompoundShape : public Shape {
 public:
     ~CompoundShape() 
