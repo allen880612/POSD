@@ -78,12 +78,12 @@ TEST_F(SuiteParagraph, ConstructWithLevelGratherThanSixShouldThrowException) {
 }
 
 TEST_F(SuiteParagraph, getText) {
-    std::string expected = "### title3\n";
+    std::string expected = "title3";
     ASSERT_EQ(expected, p3->getText());
 }
 
-TEST_F(SuiteParagraph, getTextShouldContainChildenContent) {
-    std::string expected = "# title\n- list1\n- list2\ntext\n## title2\n- list3\n- list4\nsub text";
+TEST_F(SuiteParagraph, getTextShouldNotContainChildenContent) {
+    std::string expected = "title";
     ASSERT_EQ(expected, p1->getText());
 }
 

@@ -33,7 +33,7 @@ TEST_F(SuiteListItem, GetLevelShouldBeZero) {
 }
 
 TEST_F(SuiteListItem, GetText) {
-    ASSERT_EQ(std::string("- content"), listItem->getText());
+    ASSERT_EQ(std::string("content"), listItem->getText());
 }
 
 TEST_F(SuiteListItem, CreateIteratorShouldBeNulliterator) {
