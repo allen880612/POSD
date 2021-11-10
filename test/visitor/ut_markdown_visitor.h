@@ -1,9 +1,10 @@
 #pragma once
-#include "../src/paragraph.h"
-#include "../src/list_item.h"
-#include "../src/text.h"
-#include "../src/iterator/compound_iterator.h"
-#include "../src/visitor/markdown_visitor.h"
+#include "../../src/paragraph.h"
+#include "../../src/list_item.h"
+#include "../../src/text.h"
+#include "../../src/iterator/compound_iterator.h"
+#include "../../src/visitor/markdown_visitor.h"
+#include <vector>
 
 class SuiteMarkdownVisitor : public ::testing::Test
 {
@@ -47,19 +48,33 @@ protected:
     Article* p3_2;
     Article* t1;
     Article* t2;
-    std::list<Article*> listItems;
-    MarkdownVisitor* visitor;
+    std::vector<Article*> listItems;
+    ArticleVisitor* visitor;
 };
 
-TEST_F(SuiteParagraph, getText) {
-    std::string expected = "### title3\n";
-    visitor->visitParagraph
-    ASSERT_EQ(expected, p3->getText());
+TEST_F(SuiteMarkdownVisitor, visitText) {
+    std::string expected = "text\n";
+    visitor->visitText((Text*)t1);
+    ASSERT_EQ(expected, visitor->getResult());
 }
 
-TEST_F(SuiteParagraph, getTextShouldContainChildenContent) {
-    std::string expected = "# title\n- list1\n- list2\ntext\n## title2\n- list3\n- list4\nsub text";
-    ASSERT_EQ(expected, p1->getText());
+TEST_F(SuiteMarkdownVisitor, visitListItem) {
+    std::string expected = "- list1\n";
+    visitor->visitListItem((ListItem*)listItems[0]);
+    ASSERT_EQ(expected, visitor->getResult());
+}
+
+
+TEST_F(SuiteMarkdownVisitor, visitParagraph) {
+    std::string expected = "### title3\n";
+    visitor->visitParagraph((Paragraph*)p3);
+    ASSERT_EQ(expected, visitor->getResult());
+}
+
+TEST_F(SuiteMarkdownVisitor, getTextShouldContainChildenContent) {
+    std::string expected = "# title\n- list1\n- list2\ntext\n## title2\n- list3\n- list4\nsub text\n";
+    visitor->visitParagraph((Paragraph*)p1);
+    ASSERT_EQ(expected, visitor->getResult());
 }
 
 
