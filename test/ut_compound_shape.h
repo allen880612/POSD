@@ -59,6 +59,22 @@ TEST_F(CaseCompoundShape, Delete)
     ASSERT_TRUE(it->isDone());
 }
 
+TEST_F(CaseCompoundShape, DeleteInnerShape)
+{
+    Shape* c = new Circle(2);
+    Shape* r = new Rectangle(3 ,4);
+    Shape* cs2 = new CompoundShape();
+    cs2->addShape(c);
+    cs2->addShape(r);
+    cs->addShape(cs2);
+
+    double originalArea = cs->area();
+    double expectedArea = cs->area() - r->area();
+    cs->deleteShape(r);
+
+    ASSERT_EQ(expectedArea, cs->area());
+}
+
 // Should move to utility test
 // TEST_F(CaseCompoundShape, DeleteSelectedShape)
 // {   
@@ -84,38 +100,16 @@ TEST_F(CaseCompoundShape, Perimeter)
     ASSERT_NEAR(18+2*M_PI, cs->perimeter(), ACCURACY);
 }
 
-TEST_F(CaseCompoundShape, SimpleInfo)
+TEST_F(CaseCompoundShape, Info)
 {
-    std::string expected = "CompoundShape\n{\n"
-                         + c1->info() + "\n"
-                         + r45->info()
-                         + "\n}";
+    std::string expected = "CompoundShape";
     ASSERT_EQ(expected, cs->info());
 }
 
-TEST_F(CaseCompoundShape, ComplexInfo)
-{
-    Shape* c = new Circle(1.1);
-    Shape* r = new Rectangle(3.14 ,4);
-    std::string expected = "CompoundShape\n{\n"
-                         + c1->info() + "\n"
-                         + r45->info() + "\n"
-                         + "CompoundShape\n{\n"
-                         + c->info() + "\n"
-                         + r->info() + "\n"
-                         + "}\n"
-                         + "}";
-
-    Shape* cs2 = new CompoundShape();
-    cs2->addShape(c);
-    cs2->addShape(r);
-    cs->addShape(cs2);
-}
 
 TEST_F(CaseCompoundShape, SimpleInfoByVisitor)
 {
-    std::string expected = "CompoundShape\n"
-                           "{\n"
+    std::string expected = "CompoundShape{\n"
                            "  " + c1->info() +"\n"
                            "  " + r45->info() + "\n"
                            "}";
@@ -129,11 +123,10 @@ TEST_F(CaseCompoundShape, ComplexInfoByVisitor)
 {
     Shape* c = new Circle(1.1);
     Shape* r = new Rectangle(3.14 ,4);
-    std::string expected = "CompoundShape\n{\n"
+    std::string expected = "CompoundShape{\n"
                            "  " + c1->info() + "\n"
                            "  " + r45->info() + "\n"
-                           "  CompoundShape\n"
-                           "  {\n"
+                           "  CompoundShape{\n"
                            "    " + c->info() + "\n"
                            "    " + r->info() + "\n"
                            "  }\n"
