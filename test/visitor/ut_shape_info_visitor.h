@@ -65,7 +65,7 @@ TEST_F(CaseVisitor, SimpleInfo)
     std::string expected = "CompoundShape{\n"
                            "  " + c1->info() +"\n"
                            "  " + r45->info() + "\n"
-                           "}";
+                           "}\n";
     
     shapeInfoVisitor->visitCompoundShape((CompoundShape*)cs);
 
@@ -83,7 +83,7 @@ TEST_F(CaseVisitor, ComplexInfo)
                            "    " + c->info() + "\n"
                            "    " + r->info() + "\n"
                            "  }\n"
-                           "}";
+                           "}\n";
 
     Shape* cs2 = new CompoundShape();
     cs2->addShape(c);
