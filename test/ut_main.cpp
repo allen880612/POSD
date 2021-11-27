@@ -1,12 +1,15 @@
 #include <gtest/gtest.h>
 
-#include "./iterator/ut_compound_iterator.h"
-#include "./iterator/ut_null_iterator.h"
-#include "./ut_list_item.h"
-#include "./ut_paragraph.h"
-#include "./ut_text.h"
-#include "./visitor/ut_html_visitor.h"
-#include "./visitor/ut_markdown_visitor.h"
+#include "ut_shape.h"
+#include "ut_circle.h"
+#include "ut_rectangle.h"
+#include "ut_triangle.h"
+#include "ut_two_dimensional_vector.h"
+
+#include "ut_iterator.h"
+#include "ut_compound_shape.h"
+#include "ut_utility.h"
+#include "ut_visitor.h"
 
 
 int main(int argc, char** argv) {
