@@ -75,21 +75,6 @@ TEST_F(CaseCompoundShape, DeleteInnerShape)
     ASSERT_EQ(expectedArea, cs->area());
 }
 
-// Should move to utility test
-// TEST_F(CaseCompoundShape, DeleteSelectedShape)
-// {   
-//     // delete c1 by area
-//     Shape* result = selectShape(cs, [&] (Shape* shape) -> bool {
-//         return typeid(*shape) == typeid(Circle);
-//     });
-
-//     cs->deleteShape(result);
-//     Iterator* it = cs->createIterator();
-
-//     // first item is r45, instead of c1 now
-//     ASSERT_EQ(r45, it->currentItem());
-// }
-
 TEST_F(CaseCompoundShape, Area)
 {
     ASSERT_NEAR(M_PI + 4*5, cs->area(), ACCURACY);

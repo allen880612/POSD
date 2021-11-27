@@ -33,33 +33,6 @@ protected:
     ShapeInfoVisitor* shapeInfoVisitor;
 };
 
-// TEST_F(CaseVisitor, SelectShapeOnCircleNotFound) {
-//     Circle* c1 = new Circle(1.0);
-    
-//     SelectShapeVisitor* visitor = new SelectShapeVisitor([](Shape* shape) {
-//         return shape->area() > 20.0 && shape->area() < 30.0;
-//     });
-//     // c1->accept(visitor);
-//     visitor->visitCircle(c1);
-//     Shape* result = visitor->getShape();
-
-//     ASSERT_EQ(nullptr, result);
-//     delete c1;
-//     delete visitor;
-// }
-
-// TEST_F(CaseVisitor, SelectShapeOnCompoundShapeByType) {
-    
-//     SelectShapeVisitor* visitor = new SelectShapeVisitor([](Shape* shape) {
-//         return typeid(Rectangle) == typeid(*shape);
-//     });
-
-//     visitor->visitCompoundShape((CompoundShape*)cs);
-//     Shape* result = visitor->getShape();
-
-//     ASSERT_EQ(r45, result);
-// }
-
 TEST_F(CaseVisitor, SimpleInfo)
 {
     std::string expected = "CompoundShape{\n"
