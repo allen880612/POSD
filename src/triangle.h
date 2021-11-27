@@ -1,6 +1,6 @@
 #pragma once
 #include "shape.h"
-#include "visitor.h"
+#include "visitor/shape_visitor.h"
 #include "iterator/null_iterator.h"
 #include "two_dimensional_vector.h"
 
@@ -33,7 +33,7 @@ public:
         return buffer;
     }
     Iterator *createIterator() override { return new NullIterator(); }
-    void accept(Visitor* visitor) override 
+    void accept(ShapeVisitor* visitor) override 
     {
         visitor->visitTriangle(this);
     }

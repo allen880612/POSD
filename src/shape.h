@@ -2,7 +2,7 @@
 #include <string>
 
 class Iterator;
-class Visitor;
+class ShapeVisitor;
 class Shape {
 public:
     virtual ~Shape() {};
@@ -12,5 +12,5 @@ public:
     virtual Iterator* createIterator() = 0;
     virtual void addShape(Shape* shape) { throw std::string("Should not call this function!"); }
     virtual void deleteShape(Shape* shape) { throw std::string("Should not call this function!"); }
-    virtual void accept(Visitor* Visitor) = 0;
+    virtual void accept(ShapeVisitor* Visitor) = 0;
 };

@@ -11,7 +11,7 @@ public:
 
     void first() override { _current = _begin; }
 
-    Article* currentItem() const override 
+    Shape* currentItem() const override 
     { 
         if(isDone())
             throw std::string("iterator is current end");
