@@ -68,11 +68,44 @@ TEST_F(CaseCompoundShape, DeleteInnerShape)
     cs2->addShape(r);
     cs->addShape(cs2);
 
-    double originalArea = cs->area();
-    double expectedArea = cs->area() - r->area();
+    const double originalArea = M_PI + 4*5 + 2*2 * M_PI + 3*4;
+    const double expectedArea = originalArea - 3*4;
     cs->deleteShape(r);
 
-    ASSERT_EQ(expectedArea, cs->area());
+    ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
+}
+
+TEST_F(CaseCompoundShape, DeleteSeveralSameShape)
+{
+    cs->addShape(r45);
+    cs->addShape(r45);
+
+    double originalArea = M_PI + 4*5 + 4*5 * 2;
+    double expectedArea = originalArea - 4*5 * 3;
+    
+    ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
+    cs->deleteShape(r45);
+    ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
+}
+
+TEST_F(CaseCompoundShape, DeleteInnerSameShape)
+{
+    Shape* c = new Circle(2);
+    Shape* r = new Rectangle(3 ,4);
+    Shape* cs2 = new CompoundShape();
+    
+    cs->addShape(r);
+    cs2->addShape(c);
+    cs2->addShape(r);
+    cs2->addShape(r);
+    cs->addShape(cs2);
+
+    const double originalArea = M_PI + 4*5 + 2*2 * M_PI + 3*4 * 3;
+    const double expectedArea = originalArea - 3*4 * 3;
+    
+    ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
+    cs->deleteShape(r);
+    ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
 }
 
 // Should move to utility test
