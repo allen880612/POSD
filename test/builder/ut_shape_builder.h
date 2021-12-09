@@ -2,8 +2,6 @@
 #include "../../src/builder/shape_builder.h"
 
 #include <cmath>
-
-#define CIRCLE_EXCEPTION_MSG std::string("Circle created by positive double radius.")
 #define ACCURACY 0.001
 
 class CaseShapeBuilder : public ::testing::Test
