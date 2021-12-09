@@ -22,14 +22,11 @@ private:
 };
 
 std::string Scanner::next() {
-    if (_pos == _input.length()) {
+    if (_pos >= _input.length()) {
         throw std::string("Already point to end of Input.");
     }
     std::string result = "";
     skipNonToken();
-    if (_pos == _input.length()) {
-        return nullptr;
-    }
     for(auto token: tokenList) {
         if(_input.compare(_pos, token.length(), token) == 0) {
             _pos = _pos + token.length();
