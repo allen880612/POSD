@@ -41,30 +41,19 @@ std::string ShapeParser::readFile(std::string filePath) {
 }
 
 void ShapeParser::parse() {
-    // std::cout << _content << std::endl;
     while (!_sc->isDone()) {
         std::string token = _sc->next();
         if (token == "Circle") {
-            _sc->next();    // ignore '('
             _builder->buildCircle(_sc->nextDouble());
-            _sc->next();    // ignore ')'
         } else if (token == "Rectangle") {
-            _sc->next();    // ignore '('
             _builder->buildRectangle(_sc->nextDouble(), _sc->nextDouble());
-            _sc->next();    // ignore ')'
         } else if (token == "Triangle") {
-            _sc->next();    // ignore '('
-            _sc->next();    // ignore '['
             double x1 = _sc->nextDouble();
-            _sc->next();    // ignore ','
             double y1 = _sc->nextDouble();
             double x2 = _sc->nextDouble();
-            _sc->next();    // ignore ','
             double y2 = _sc->nextDouble();
-            _sc->next();    // ignore ')'
             _builder->buildTriangle(x1, y1, x2, y2);
         } else if (token == "CompoundShape") {
-            _sc->next();    // ignore '{'
             _builder->buildCompoundBegin();
         } else if (token == "}") {
             _builder->buildCompoundEnd();
