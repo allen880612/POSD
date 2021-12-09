@@ -40,7 +40,7 @@ std::string Scanner::next() {
 }
 
 void Scanner::skipNonToken() {
-    while (_pos != _input.length()){
+    while (_pos < _input.length()){
         for(auto token: tokenList) {
             if(_input.compare(_pos, token.length(), token) == 0)
                 return;

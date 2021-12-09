@@ -172,3 +172,12 @@ TEST(CaseScanner, callNextShouldThrowExceptionWhileAlreadyDone) {
     ASSERT_TRUE(sc.isDone());
     ASSERT_ANY_THROW(sc.next());
 }
+
+TEST(CaseScanner, callNextShouldThrowExceptionWhileNonToken) {
+    std::string input = "Circle";
+    Scanner sc(input);
+
+    sc.next();
+    ASSERT_TRUE(sc.isDone());
+    ASSERT_ANY_THROW(sc.next());
+}
