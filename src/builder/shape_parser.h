@@ -7,5 +7,5 @@ public:
 
     void parse() {}
 
-    Shape* getShape() {return nullptr}
+    Shape* getShape() {return nullptr;}
 };
