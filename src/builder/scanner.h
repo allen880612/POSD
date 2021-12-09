@@ -27,6 +27,9 @@ std::string Scanner::next() {
     }
     std::string result = "";
     skipNonToken();
+    if (_pos == _input.length()) {
+        return nullptr;
+    }
     for(auto token: tokenList) {
         if(_input.compare(_pos, token.length(), token) == 0) {
             _pos = _pos + token.length();
@@ -61,23 +64,19 @@ double Scanner::nextDouble() {
     if (_pos == _input.length()) {
         throw std::string("Already point to end of Input.");
     }
-
     std::string s = "";
     while (!isDigitOrDot()) {
         _pos++;
     }
-
     while(isDigitOrDot()) {
         // twice or more dot will be an issue
         s = s + _input[_pos];
         _pos++;
     }
-
     return std::stod(s);
 }
 
 bool Scanner::isDone() {
-    Scanner::skipNonToken();
-    // may still have double, may not just check token
+    skipNonToken();
     return _pos == _input.length();
 }
