@@ -79,6 +79,43 @@ TEST(CaseScanner, scanTriangleWithNoise) {
     ASSERT_TRUE(sc.isDone());
 }
 
+TEST(CaseScanner, scanEmptyCompoundShape) {
+    std::string input = "CompoundShape {}";
+    Scanner sc(input);
+
+    ASSERT_EQ("CompoundShape", sc.next());
+    ASSERT_EQ("{", sc.next());
+    ASSERT_EQ("}", sc.next());
+    ASSERT_TRUE(sc.isDone());
+}
+
+TEST(CaseScanner, scanEmptyCompoundShapeWithNoise) {
+    std::string input = "CompoundShape Circular{SELECT*FROM USER WHERE 1;--}recursion";
+    Scanner sc(input);
+
+    ASSERT_EQ("CompoundShape", sc.next());
+    ASSERT_EQ("{", sc.next());
+    ASSERT_EQ("}", sc.next());
+    ASSERT_TRUE(sc.isDone());
+}
+
+// TEST(CaseScanner, scanSimpleCompoundShape) {
+//     std::string input = "Compound{Triangle, [3.0 0.0] [0.0 4.0]}";
+//     Scanner sc(input);
+
+//     ASSERT_EQ("Triangle", sc.next());
+//     ASSERT_EQ(",", sc.next());
+//     ASSERT_EQ("[", sc.next());
+//     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
+//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
+//     ASSERT_EQ("]", sc.next());
+//     ASSERT_EQ("[", sc.next());
+//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
+//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
+//     ASSERT_EQ("]", sc.next());
+//     ASSERT_TRUE(sc.isDone());
+// }
+
 TEST(CaseScanner, callNextShouldThrowExceptionWhileAlreadyDone) {
     std::string input = "";
     Scanner sc(input);

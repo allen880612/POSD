@@ -142,7 +142,7 @@ TEST_F(CaseCompoundShape, Info)
 
 TEST_F(CaseCompoundShape, SimpleInfoByVisitor)
 {
-    std::string expected = "CompoundShape{\n"
+    std::string expected = "CompoundShape {\n"
                            "  " + c1->info() +"\n"
                            "  " + r45->info() + "\n"
                            "}\n";
@@ -156,10 +156,10 @@ TEST_F(CaseCompoundShape, ComplexInfoByVisitor)
 {
     Shape* c = new Circle(1.1);
     Shape* r = new Rectangle(3.14 ,4);
-    std::string expected = "CompoundShape{\n"
+    std::string expected = "CompoundShape {\n"
                            "  " + c1->info() + "\n"
                            "  " + r45->info() + "\n"
-                           "  CompoundShape{\n"
+                           "  CompoundShape {\n"
                            "    " + c->info() + "\n"
                            "    " + r->info() + "\n"
                            "  }\n"

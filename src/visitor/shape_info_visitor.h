@@ -53,7 +53,7 @@ void ShapeInfoVisitor::visitTriangle(Triangle *triangle)
 
 void ShapeInfoVisitor::visitCompoundShape(CompoundShape *cs)
 {
-    std::string start = getIndent() + "CompoundShape{\n";
+    std::string start = getIndent() + "CompoundShape {\n";
     std::string end = getIndent() + "}\n";
 
     _result += start;
