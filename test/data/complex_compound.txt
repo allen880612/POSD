@@ -1,0 +1,10 @@
+CompoundShape {
+  Circle (1.0)
+  Triangle ([3,0] [0,4])
+  CompoundShape {
+    Circle (1.0)
+    Rectangle (3.14 4.00)
+    Triangle ([3,0] [0,4])
+  }
+  Rectangle (3.14 4.00)
+}
