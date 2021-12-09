@@ -1,3 +1,6 @@
+#pragma
+#include "../shape.h"
+
 class ShapeParser{
 public:
     // `filePath` is a relative path of makefile
