@@ -20,6 +20,7 @@ TEST(CaseScanner, scanCircleWithNoise) {
 
     ASSERT_EQ("Circle", sc.next());
     ASSERT_EQ(",", sc.next());
+    ASSERT_EQ("{", sc.next());
     ASSERT_NEAR(3.14159, sc.nextDouble(), ACCURACY);
     ASSERT_TRUE(sc.isDone());
 }
@@ -99,6 +100,7 @@ TEST(CaseScanner, scanEmptyCompoundShapeWithNoise) {
 
     ASSERT_EQ("CompoundShape", sc.next());
     ASSERT_EQ("{", sc.next());
+    ASSERT_NEAR(1.0, sc.nextDouble(), ACCURACY);
     ASSERT_EQ("}", sc.next());
     ASSERT_TRUE(sc.isDone());
 }
@@ -126,10 +128,12 @@ TEST(CaseScanner, scanComplexCompoundShape) {
     ASSERT_EQ("(", sc.next());
     ASSERT_EQ("[", sc.next());
     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
+    ASSERT_EQ(",", sc.next());
     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
     ASSERT_EQ("]", sc.next());
     ASSERT_EQ("[", sc.next());
     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
+    ASSERT_EQ(",", sc.next());
     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
     ASSERT_EQ("]", sc.next());
     ASSERT_EQ(")", sc.next());
@@ -148,10 +152,12 @@ TEST(CaseScanner, scanComplexCompoundShape) {
     ASSERT_EQ("(", sc.next());
     ASSERT_EQ("[", sc.next());
     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
+    ASSERT_EQ(",", sc.next());
     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
     ASSERT_EQ("]", sc.next());
     ASSERT_EQ("[", sc.next());
     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
+    ASSERT_EQ(",", sc.next());
     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
     ASSERT_EQ("]", sc.next());
     ASSERT_EQ(")", sc.next());
@@ -173,11 +179,12 @@ TEST(CaseScanner, callNextShouldThrowExceptionWhileAlreadyDone) {
     ASSERT_ANY_THROW(sc.next());
 }
 
-TEST(CaseScanner, callNextShouldThrowExceptionWhileNonToken) {
-    std::string input = "Circle";
+TEST(CaseScanner, isDoneTest) {
+    std::string input = "Circle 12.156";
     Scanner sc(input);
 
     sc.next();
+    // ASSERT_FALSE(sc.isDone());
+    ASSERT_NEAR(12.156, sc.nextDouble(), ACCURACY);
     ASSERT_TRUE(sc.isDone());
-    ASSERT_ANY_THROW(sc.next());
 }

@@ -1,11 +1,14 @@
 #pragma once
 #include <string>
-#include <vector>
+#include <list>
 #include <iostream>
 
 class Scanner {
 public:
-    Scanner(std::string input) : _input(input) {}
+    Scanner(std::string input) : _input(input) {
+        buildTokens();
+        buildDoubles();
+    }
 
     std::string next();
     double nextDouble();
@@ -13,67 +16,69 @@ public:
 
 
 private:
-    void skipWhiteSpace();
-    void skipNonToken();
-    bool isDigitOrDot();
-    const std::vector<std::string> tokenList = {"Circle", "Rectangle", "Triangle", "CompoundShape", "(", ")", "[", "]", "{", "}", ","};
+    void buildTokens();
+    void buildDoubles();
+
     std::string _input;
-    std::string::size_type _pos = 0;
+    const std::list<std::string> tokenList = {"Circle", "Rectangle", "Triangle", "CompoundShape", "(", ")", "[", "]", "{", "}", ","};
+    std::list<std::string> tokens;
+    std::list<double> doubles;
+
 };
 
-std::string Scanner::next() {
-    if (_pos >= _input.length()) {
-        throw std::string("Already point to end of Input.");
-    }
-    std::string result = "";
-    skipNonToken();
-    for(auto token: tokenList) {
-        if(_input.compare(_pos, token.length(), token) == 0) {
-            _pos = _pos + token.length();
-            result = token;
-            return result;
-        }
-    }
-}
+void Scanner::buildTokens() {
+    std::string::size_type pos = 0;
 
-void Scanner::skipNonToken() {
-    while (_pos < _input.length()){
+    while (pos < _input.length()) {
+        bool isToken = false;
         for(auto token: tokenList) {
-            if(_input.compare(_pos, token.length(), token) == 0)
-                return;
+            isToken = _input.compare(pos, token.length(), token) == 0;
+            if(isToken) {
+                pos = pos + token.length();
+                tokens.push_back(token);
+                break;
+            }
         }
-        _pos++;
+        if (!isToken) pos++;
     }
 }
 
-void Scanner::skipWhiteSpace() {
-    while(_input[_pos] == ' ' || _input[_pos] == '\n' || _input[_pos] =='\t') {
-        _pos++;
+void Scanner::buildDoubles() {
+    std::string::size_type pos = 0;
+    std::string numStr = "";
+
+    while (pos < _input.length()) {
+        bool isDigitOrDot = _input[pos] == '.' || _input[pos] <= '9' && _input[pos] >= '0';
+        if(isDigitOrDot) {
+            numStr += _input[pos];
+        } else if (numStr != "") {
+            doubles.push_back(std::stod(numStr));
+            numStr = "";
+        }
+        pos++;
     }
+    // end of string
+    if (numStr != "") doubles.push_back(std::stod(numStr));
 }
 
-bool Scanner::isDigitOrDot() {
-    bool isEnd = _pos == _input.length();
-    return  !isEnd && (_input[_pos] == '.' || _input[_pos] <= '9' && _input[_pos] >= '0');
+std::string Scanner::next() {
+    if (isDone()) throw std::string("Already point to end of Input.");
+
+    std::string result = tokens.front();
+    tokens.pop_front();
+    // std::cout << result << std::endl;
+    return result;
 }
 
 double Scanner::nextDouble() {
-    if (_pos == _input.length()) {
-        throw std::string("Already point to end of Input.");
-    }
-    std::string s = "";
-    while (!isDigitOrDot()) {
-        _pos++;
-    }
-    while(isDigitOrDot()) {
-        // twice or more dot will be an issue
-        s = s + _input[_pos];
-        _pos++;
-    }
-    return std::stod(s);
+    if (isDone()) throw std::string("Already point to end of Input.");
+
+    double result = doubles.front();
+    doubles.pop_front();
+    // std::cout << result << std::endl;
+    return result;
 }
 
 bool Scanner::isDone() {
-    skipNonToken();
-    return _pos == _input.length();
+    return tokens.empty() && doubles.empty();
 }
