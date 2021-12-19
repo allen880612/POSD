@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include "../../src/builder/shape_parser.h"
 #include "../../src/compound_shape.h"
 #include <cmath>
@@ -9,9 +9,13 @@ TEST(CaseParser, parseCircle) {
     std::string path = "test/data/circle.txt";
     ShapeParser parser(path);
     double expectedArea = M_PI;
-
-    parser.parse();
-    Shape* s = parser.getShape();
+    Shape* s = nullptr;
+    try {
+        parser.parse();
+        s = parser.getShape();
+    } catch (std::string e) {
+        std::cout << e << std::endl;
+    }
 
     ASSERT_EQ(typeid(Circle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);

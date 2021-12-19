@@ -9,6 +9,7 @@ class CaseShapeBuilder : public ::testing::Test
 protected:
     void SetUp() override
     {
+        builder = ShapeBuilder::getInstance();
         TwoDimensionalVector vec_30(3.0, 0.0);
         TwoDimensionalVector vec_t04(0.0, 4.0);
         triagle = new Triangle(vec_30, vec_t04);
@@ -23,7 +24,7 @@ protected:
         delete circle;
     }
 
-    ShapeBuilder builder;
+    ShapeBuilder* builder;
     Triangle* triagle;
     Circle* circle;
     Rectangle* rectangle;
@@ -32,8 +33,8 @@ protected:
 TEST_F(CaseShapeBuilder, buildCircle) {
     double expected = M_PI;
 
-    builder.buildCircle(1.0);
-    Shape* s = builder.getShape();
+    builder->buildCircle(1.0);
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(Circle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
@@ -42,8 +43,8 @@ TEST_F(CaseShapeBuilder, buildCircle) {
 TEST_F(CaseShapeBuilder, buildRectangle) {
     double expected = 3.14 * 4.0;
 
-    builder.buildRectangle(3.14, 4.0);
-    Shape* s = builder.getShape();
+    builder->buildRectangle(3.14, 4.0);
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(Rectangle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
@@ -52,8 +53,8 @@ TEST_F(CaseShapeBuilder, buildRectangle) {
 TEST_F(CaseShapeBuilder, buildTriangle) {
     double expected = 3 * 4 / 2;
 
-    builder.buildTriangle(3.0, 0.0, 0.0, 4.0);
-    Shape* s = builder.getShape();
+    builder->buildTriangle(3.0, 0.0, 0.0, 4.0);
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(Triangle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
@@ -62,12 +63,12 @@ TEST_F(CaseShapeBuilder, buildTriangle) {
 TEST_F(CaseShapeBuilder, buildSimpleCompoundShape) {
     double expected = M_PI + 3.14 * 4.0 + 3 * 4 / 2;
 
-    builder.buildCompoundBegin();
-    builder.buildCircle(1.0);
-    builder.buildRectangle(3.14, 4.0);
-    builder.buildTriangle(3.0, 0.0, 0.0, 4.0);
-    builder.buildCompoundEnd();
-    Shape* s = builder.getShape();
+    builder->buildCompoundBegin();
+    builder->buildCircle(1.0);
+    builder->buildRectangle(3.14, 4.0);
+    builder->buildTriangle(3.0, 0.0, 0.0, 4.0);
+    builder->buildCompoundEnd();
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
@@ -76,9 +77,9 @@ TEST_F(CaseShapeBuilder, buildSimpleCompoundShape) {
 TEST_F(CaseShapeBuilder, buildEmptyCompoundShape) {
     double expected = 0;
 
-    builder.buildCompoundBegin();
-    builder.buildCompoundEnd();
-    Shape* s = builder.getShape();
+    builder->buildCompoundBegin();
+    builder->buildCompoundEnd();
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
@@ -87,18 +88,25 @@ TEST_F(CaseShapeBuilder, buildEmptyCompoundShape) {
 TEST_F(CaseShapeBuilder, buildComplexCompoundShape) {
     double expected = (M_PI + 3.14 * 4.0 + 3 * 4 / 2) * 2;
 
-    builder.buildCompoundBegin();
-    builder.buildCircle(1.0);
-    builder.buildTriangle(3.0, 0.0, 0.0, 4.0);
-    builder.buildCompoundBegin();
-    builder.buildCircle(1.0);
-    builder.buildRectangle(3.14, 4.0);
-    builder.buildTriangle(3.0, 0.0, 0.0, 4.0);
-    builder.buildCompoundEnd();
-    builder.buildRectangle(3.14, 4.0);
-    builder.buildCompoundEnd();
-    Shape* s = builder.getShape();
+    builder->buildCompoundBegin();
+    builder->buildCircle(1.0);
+    builder->buildTriangle(3.0, 0.0, 0.0, 4.0);
+    builder->buildCompoundBegin();
+    builder->buildCircle(1.0);
+    builder->buildRectangle(3.14, 4.0);
+    builder->buildTriangle(3.0, 0.0, 0.0, 4.0);
+    builder->buildCompoundEnd();
+    builder->buildRectangle(3.14, 4.0);
+    builder->buildCompoundEnd();
+    Shape* s = builder->getShape();
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+}
+
+TEST_F(CaseShapeBuilder, builderShouldBeSingleton) {
+    ShapeBuilder* builder1 = ShapeBuilder::getInstance();
+    ShapeBuilder* builder2 = ShapeBuilder::getInstance();
+    ASSERT_EQ(builder1, builder2);
+
 }

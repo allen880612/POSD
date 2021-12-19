@@ -7,16 +7,32 @@
 
 class ShapeBuilder {
 public:
+    static ShapeBuilder* getInstance() {
+        // local static parameter only initialize when first time call static function
+        static ShapeBuilder instance;
+        return &instance;
+    }
+    void reset();
+    ~ShapeBuilder() {}
+
     void buildCircle(double radius);
     void buildRectangle(double length, double width);
     void buildTriangle(double x1, double y1, double x2, double y2);
     void buildCompoundBegin();
     void buildCompoundEnd();
     Shape* getShape();
+
 private:
+    ShapeBuilder() {};
     bool topIsNonEmptyCompoundShape();
     std::stack<Shape*> _shapes;
+    // static ShapeBuilder* instance;
 };
+// ShapeBuilder* ShapeBuilder::instance = nullptr;
+
+void ShapeBuilder::reset() {
+    _shapes = std::stack<Shape*>();
+}
 
 void ShapeBuilder::buildCircle(double radius) {
     _shapes.push(new Circle(radius));
@@ -56,6 +72,9 @@ void ShapeBuilder::buildCompoundEnd() {
 }
 
 Shape* ShapeBuilder::getShape(){
+    if (_shapes.empty()) {
+        throw std::string("Should call build some shape BEFORE call getShape()!");
+    }
     Shape* result = _shapes.top();
     _shapes.pop();
     return result;

@@ -20,10 +20,13 @@ BUILDER= src/builder/shape_builder.h src/builder/shape_parser.h \
 
 SRC= $(SHAPE) $(ITERATOR) $(VISITOR) $(BUILDER)
 
-all: directories ut_main
+all: directories main ut_main
+
+main: src/main.cpp src/input_handler.h src/input_handler.cpp $(SRC)
+	g++ -std=c++17 -Wfatal-errors src/input_handler.cpp src/main.cpp -o bin/main -lgtest -lpthread
 
 ut_main: test/ut_main.cpp $(TEST) $(SRC)
-	g++ -std=c++11 -Wfatal-errors test/ut_main.cpp -o bin/ut_all -lgtest -lpthread
+	g++ -std=c++17 -Wfatal-errors test/ut_main.cpp -o bin/ut_all -lgtest -lpthread
 
 directories:
 	mkdir -p bin

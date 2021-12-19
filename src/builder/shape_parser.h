@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include "../shape.h"
 #include "../builder/scanner.h"
 #include "../builder/shape_builder.h"
@@ -11,15 +11,19 @@ public:
     // `filePath` is a relative path of makefile
     ShapeParser(std::string filePath) {
         _sc = new Scanner(readFile(filePath));
-        _builder = new ShapeBuilder();
+        _builder = ShapeBuilder::getInstance();
     }
 
     ~ShapeParser() {
         delete _sc;
-        delete _builder;
+        _builder->reset();
     }
     void parse();
-    Shape* getShape() { return _builder->getShape(); }
+    Shape* getShape() { 
+        Shape* result = _builder->getShape();
+        _builder->reset();
+        return result;
+    }
 private:
     std::string readFile(std::string filePath);
     ShapeBuilder* _builder;
