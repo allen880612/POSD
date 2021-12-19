@@ -1,5 +1,6 @@
 #pragma once
 #include "../src/circle.h"
+#include "../src/visitor/shape_info_visitor.h"
 
 #define CIRCLE_EXCEPTION_MSG std::string("Circle created by positive double radius.")
 #define ACCURACY 0.001
@@ -65,4 +66,13 @@ TEST_F(CaseCircle, DeleteShouldThrowException) {
 
 TEST_F(CaseCircle, IsDoneOfCreateIteratorShouldBeTrue) {
     ASSERT_TRUE(c10->createIterator()->isDone());
+}
+
+TEST_F(CaseCircle, acceptShapeInfoVisitor) {
+    std::string expected = "Circle (10.00)\n";
+    ShapeInfoVisitor visitor;
+    
+    c10->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
 }

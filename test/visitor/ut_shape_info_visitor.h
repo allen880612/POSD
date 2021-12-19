@@ -16,6 +16,7 @@ protected:
         c1 = new Circle(1.0);
         r45 = new Rectangle(4.0, 5.0);
         cs = new CompoundShape();
+        triangle = new Triangle(TwoDimensionalVector(3.0, 0.0), TwoDimensionalVector(0.0, 4.0));
 
         cs->addShape(c1);
         cs->addShape(r45);
@@ -30,6 +31,7 @@ protected:
     Shape* c1;
     Shape* r45;
     Shape* cs;
+    Shape* triangle;
     ShapeInfoVisitor* shapeInfoVisitor;
 };
 
@@ -59,6 +61,33 @@ protected:
 
 //     ASSERT_EQ(r45, result);
 // }
+
+TEST_F(CaseVisitor, VisitCircle)
+{
+    std::string expected = "Circle (1.00)\n";
+    
+    shapeInfoVisitor->visitCircle((Circle*)c1);
+
+    ASSERT_EQ(expected, shapeInfoVisitor->getResult());
+}
+
+TEST_F(CaseVisitor, VisitRectangle)
+{
+    std::string expected = "Rectangle (4.00 5.00)\n";
+    
+    shapeInfoVisitor->visitRectangle((Rectangle*)r45);
+
+    ASSERT_EQ(expected, shapeInfoVisitor->getResult());
+}
+
+TEST_F(CaseVisitor, VisitTriangle)
+{
+    std::string expected = "Triangle ([3.00,0.00] [0.00,4.00])\n";
+    
+    shapeInfoVisitor->visitTriangle((Triangle*)triangle);
+
+    ASSERT_EQ(expected, shapeInfoVisitor->getResult());
+}
 
 TEST_F(CaseVisitor, SimpleInfo)
 {
