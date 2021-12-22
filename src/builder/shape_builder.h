@@ -13,7 +13,7 @@ public:
         return &instance;
     }
     void reset();
-    ~ShapeBuilder() {}
+    ~ShapeBuilder() { reset(); }
 
     void buildCircle(double radius);
     void buildRectangle(double length, double width);
@@ -31,7 +31,11 @@ private:
 // ShapeBuilder* ShapeBuilder::instance = nullptr;
 
 void ShapeBuilder::reset() {
-    _shapes = std::stack<Shape*>();
+    while (!_shapes.empty()) {
+        Shape* deleteShape = _shapes.top();
+        _shapes.pop();
+        delete deleteShape;
+    }
 }
 
 void ShapeBuilder::buildCircle(double radius) {
