@@ -26,6 +26,7 @@ public:
             it->next();
         }
         _result += + "</div>";
+        delete it;
     };
 
     std::string getResult() const override { return _result; }

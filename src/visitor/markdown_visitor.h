@@ -27,6 +27,7 @@ public:
             it->currentItem()->accept(this);
             it->next();
         }
+        delete it;
     }
 
     std::string getPrefix(int level) const

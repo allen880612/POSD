@@ -38,6 +38,7 @@ TEST_F(CaseShapeBuilder, buildCircle) {
 
     ASSERT_EQ(typeid(Circle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, buildRectangle) {
@@ -48,6 +49,7 @@ TEST_F(CaseShapeBuilder, buildRectangle) {
 
     ASSERT_EQ(typeid(Rectangle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, buildTriangle) {
@@ -58,6 +60,7 @@ TEST_F(CaseShapeBuilder, buildTriangle) {
 
     ASSERT_EQ(typeid(Triangle), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, buildSimpleCompoundShape) {
@@ -72,6 +75,7 @@ TEST_F(CaseShapeBuilder, buildSimpleCompoundShape) {
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, buildEmptyCompoundShape) {
@@ -83,6 +87,7 @@ TEST_F(CaseShapeBuilder, buildEmptyCompoundShape) {
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, buildComplexCompoundShape) {
@@ -102,6 +107,8 @@ TEST_F(CaseShapeBuilder, buildComplexCompoundShape) {
 
     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
     ASSERT_NEAR(expected, s->area(), ACCURACY);
+
+    delete s;
 }
 
 TEST_F(CaseShapeBuilder, builderShouldBeSingleton) {

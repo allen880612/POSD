@@ -24,8 +24,9 @@ protected:
 
     void TearDown() override
     {
-        delete cs;
         delete shapeInfoVisitor;
+        delete cs;
+        delete triangle;
     }
 
     Shape* c1;

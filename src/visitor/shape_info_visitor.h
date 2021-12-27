@@ -65,4 +65,5 @@ void ShapeInfoVisitor::visitCompoundShape(CompoundShape *cs)
         it->next();
     }
     _result += end;
+    delete it;
 }

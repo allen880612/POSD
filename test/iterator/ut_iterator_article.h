@@ -36,6 +36,7 @@ TEST_F(SuiteIterator, CompoundIteratorIsAIterator) {
     
     Iterator* it = new CompoundArticleIterator(articles.begin(), articles.end());
     ASSERT_EQ(typeid(CompoundArticleIterator), typeid(*it));
+    delete it;
 }
 
 TEST_F(SuiteIterator, CompoundIteratorConstructShouldNoThrow) {

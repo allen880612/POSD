@@ -34,6 +34,7 @@ void SelectShapeVisitor::visitCompoundShape(CompoundShape* cs) {
     for (it->first(); !it->isDone(); it->next()) {
         it->currentItem()->accept(this);
     }
+    delete it;
 }
 
 Shape* SelectShapeVisitor::getShape() {
@@ -73,6 +74,7 @@ void ShapeInfoVisitor::visitCompoundShape(CompoundShape *cs)
         it->next();
     }
     _result += end;
+    delete it;
 }
 
 std::string ShapeInfoVisitor::getIndent()

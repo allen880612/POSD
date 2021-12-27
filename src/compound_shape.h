@@ -9,6 +9,7 @@ class CompoundShape : public Shape {
 public:
     ~CompoundShape() 
     {  
+        // std::cout << "delete compound area: " << area() << std::endl;
         for (Shape *shpae : _shapes)
         {
             delete shpae;
@@ -47,17 +48,38 @@ public:
 
     void deleteShape(Shape* shape) override 
     { 
-        _shapes.remove(shape);
-        for (Shape* s : _shapes)
+        auto it = _shapes.begin();
+        while (it != _shapes.end())
         {
-            Iterator* shapeIt = s->createIterator();
-            // compound shape sholud check it's children
-            if (!shapeIt->isDone())
+            if(*it == shape)
             {
-                s->deleteShape(shape);
+                delete *it;
+                it = _shapes.erase(it);
+                break;
             }
-            delete shapeIt;
+            else
+            {
+                Iterator *shapeIt = (*it)->createIterator();
+                if(!shapeIt->isDone())
+                {
+                    (*it)->deleteShape(shape);
+                    std::cout << "nn" << std::endl;
+                }
+                delete shapeIt;
+            }
+            it++;
         }
+        // _shapes.remove(shape);
+        // for (Shape* s : _shapes)
+        // {
+        //     Iterator* shapeIt = s->createIterator();
+        //     // compound shape sholud check it's children
+        //     if (!shapeIt->isDone())
+        //     {
+        //         s->deleteShape(shape);
+        //     }
+        //     delete shapeIt;
+        // }
     }
 
     void accept(ShapeVisitor* visitor) override 

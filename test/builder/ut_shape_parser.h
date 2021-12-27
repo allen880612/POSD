@@ -10,15 +10,13 @@ TEST(CaseParser, parseCircle) {
     ShapeParser parser(path);
     double expectedArea = M_PI;
     Shape* s = nullptr;
-    try {
-        parser.parse();
-        s = parser.getShape();
-    } catch (std::string e) {
-        std::cout << e << std::endl;
-    }
+    
+    parser.parse();
+    s = parser.getShape();
 
     ASSERT_EQ(typeid(Circle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseRectangle) {
@@ -31,6 +29,7 @@ TEST(CaseParser, parseRectangle) {
 
     ASSERT_EQ(typeid(Rectangle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseTriangle) {
@@ -43,6 +42,7 @@ TEST(CaseParser, parseTriangle) {
 
     ASSERT_EQ(typeid(Triangle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseEmptyCompoundShape) {
@@ -59,6 +59,7 @@ TEST(CaseParser, parseEmptyCompoundShape) {
     Iterator* it = s->createIterator();
     ASSERT_TRUE(it->isDone());
     delete it;
+    delete s;
 }
 
 TEST(CaseParser, parseCompoundShape) {
@@ -75,6 +76,7 @@ TEST(CaseParser, parseCompoundShape) {
     Iterator* it = s->createIterator();
     ASSERT_FALSE(it->isDone());
     delete it;
+    delete s;
 }
 
 TEST(CaseParser, parseComplexCompoundShape) {
@@ -91,6 +93,7 @@ TEST(CaseParser, parseComplexCompoundShape) {
     Iterator* it = s->createIterator();
     ASSERT_FALSE(it->isDone());
     delete it;
+    delete s;
 }
 
 TEST(CaseParser, parseNotExistFileShouldThrowException) {

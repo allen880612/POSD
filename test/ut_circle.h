@@ -65,7 +65,9 @@ TEST_F(CaseCircle, DeleteShouldThrowException) {
 }
 
 TEST_F(CaseCircle, IsDoneOfCreateIteratorShouldBeTrue) {
-    ASSERT_TRUE(c10->createIterator()->isDone());
+    Iterator* it = c10->createIterator();
+    ASSERT_TRUE(it->isDone());
+    delete it;
 }
 
 TEST_F(CaseCircle, acceptShapeInfoVisitor) {
