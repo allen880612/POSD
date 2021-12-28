@@ -5,7 +5,7 @@ SHAPE_TEST= test/ut_compound_shape.h test/ut_circle.h test/ut_rectangle.h \
 
 ITERATOR_TEST= test/iterator/ut_null_iterator.h test/iterator/ut_compound_iterator.h
 
-VISITOR_TEST= test/visitor/ut_shape_info_visitor.h test/visitor/ut_shape_select_visitor.h
+VISITOR_TEST= test/visitor/ut_shape_info_visitor.h test/visitor/ut_select_shape_visitor.h
 
 BUILDER_TEST= test/builder/ut_shape_builder.h test/builder/ut_shape_parser.h \
 			  test/builder/ut_scanner.h
@@ -17,7 +17,7 @@ ITERATOR= src/iterator/iterator.h src/iterator/null_iterator.h \
 		  src/iterator/compound_iterator.h
 
 VISITOR= src/visitor/shape_visitor.h src/visitor/shape_info_visitor.h \
-		 src/visitor/shape_select_visitor.h
+		 src/visitor/select_shape_visitor.h
 
 BUILDER= src/builder/shape_builder.h src/builder/shape_parser.h \
 		 src/builder/scanner.h

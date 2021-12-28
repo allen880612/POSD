@@ -78,3 +78,12 @@ TEST_F(CaseCircle, acceptShapeInfoVisitor) {
 
     ASSERT_EQ(expected, visitor.getResult());
 }
+
+TEST_F(CaseCircle, acceptShapeSelectVisitor) {
+    std::string expected = "Circle (10.00)\n";
+    ShapeInfoVisitor visitor;
+    
+    c10->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
+}

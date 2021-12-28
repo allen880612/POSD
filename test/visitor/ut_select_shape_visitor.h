@@ -2,12 +2,12 @@
 #include "../../src/compound_shape.h"
 #include "../../src/circle.h"
 #include "../../src/rectangle.h"
-#include "../../src/visitor/shape_select_visitor.h"
+#include "../../src/visitor/select_shape_visitor.h"
 #include <cmath>
 
 #define ACCURACY 0.001
 
-class CaseShapeSelectVisitor : public ::testing::Test
+class CaseSelectShapeVisitor : public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -49,8 +49,8 @@ protected:
 
 };
 
-// TEST_F(CaseShapeSelectVisitor, SelectShapeOnCircleNotFound) {
-//     ShapeVisitor* visitor = new ShapeSelectVisitor( [] (Shape* shape) {
+// TEST_F(CaseSelectShapeVisitor, SelectShapeOnCircleNotFound) {
+//     ShapeVisitor* visitor = new SelectShapeVisitor( [] (Shape* shape) {
 //         return typeid(Rectangle) == typeid(*shape);
 //         });
     
@@ -61,9 +61,9 @@ protected:
 //     delete visitor;
 // }
 
-TEST_F(CaseShapeSelectVisitor, VisitCircle)
+TEST_F(CaseSelectShapeVisitor, VisitCircle)
 {
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Circle) == typeid(*shape);
     });
 
@@ -72,9 +72,9 @@ TEST_F(CaseShapeSelectVisitor, VisitCircle)
     ASSERT_EQ(c1, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, VisitRectangle)
+TEST_F(CaseSelectShapeVisitor, VisitRectangle)
 {
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Rectangle) == typeid(*shape);
     });
 
@@ -83,9 +83,9 @@ TEST_F(CaseShapeSelectVisitor, VisitRectangle)
     ASSERT_EQ(r45, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, VisitTriangle)
+TEST_F(CaseSelectShapeVisitor, VisitTriangle)
 {
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Triangle) == typeid(*shape);
     });
 
@@ -94,8 +94,8 @@ TEST_F(CaseShapeSelectVisitor, VisitTriangle)
     ASSERT_EQ(triangle, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectShapeOnCircleNotFound) {
-    ShapeSelectVisitor visitor( [] (Shape* shape) {
+TEST_F(CaseSelectShapeVisitor, SelectShapeOnCircleNotFound) {
+    SelectShapeVisitor visitor( [] (Shape* shape) {
         return typeid(Rectangle) == typeid(*shape);
         });
     
@@ -104,9 +104,9 @@ TEST_F(CaseShapeSelectVisitor, SelectShapeOnCircleNotFound) {
     ASSERT_EQ(nullptr, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectCircleInCompound) {
+TEST_F(CaseSelectShapeVisitor, SelectCircleInCompound) {
     
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Circle) == typeid(*shape);
     });
 
@@ -115,9 +115,9 @@ TEST_F(CaseShapeSelectVisitor, SelectCircleInCompound) {
     ASSERT_EQ(c1, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectRectangleInCompound) {
+TEST_F(CaseSelectShapeVisitor, SelectRectangleInCompound) {
     
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Rectangle) == typeid(*shape);
     });
 
@@ -126,9 +126,9 @@ TEST_F(CaseShapeSelectVisitor, SelectRectangleInCompound) {
     ASSERT_EQ(r45, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectTriangleInCompound) {
+TEST_F(CaseSelectShapeVisitor, SelectTriangleInCompound) {
     
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Triangle) == typeid(*shape);
     });
 
@@ -137,9 +137,9 @@ TEST_F(CaseShapeSelectVisitor, SelectTriangleInCompound) {
     ASSERT_EQ(triangle, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectInnerCircleInComplexCompound)
+TEST_F(CaseSelectShapeVisitor, SelectInnerCircleInComplexCompound)
 {
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Circle) == typeid(*shape) && shape->area() > 5.0;
     });
 
@@ -148,9 +148,9 @@ TEST_F(CaseShapeSelectVisitor, SelectInnerCircleInComplexCompound)
     ASSERT_EQ(innerCircle, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectInnerRectangleInComplexCompound)
+TEST_F(CaseSelectShapeVisitor, SelectInnerRectangleInComplexCompound)
 {
-    ShapeSelectVisitor visitor([](Shape* shape) {
+    SelectShapeVisitor visitor([](Shape* shape) {
         return typeid(Rectangle) == typeid(*shape) && shape->area() < 20.0;
     });
 
@@ -159,10 +159,10 @@ TEST_F(CaseShapeSelectVisitor, SelectInnerRectangleInComplexCompound)
     ASSERT_EQ(innerRectangle, visitor.getShape());
 }
 
-TEST_F(CaseShapeSelectVisitor, SelectInnerTriangleInComplexCompound)
+TEST_F(CaseSelectShapeVisitor, SelectInnerTriangleInComplexCompound)
 {
     Triangle* find = (Triangle*)innerTriangle;
-    ShapeSelectVisitor visitor([find](Shape* shape) {
+    SelectShapeVisitor visitor([find](Shape* shape) {
         return shape == find;
     });
 

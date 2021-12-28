@@ -7,11 +7,11 @@
 #include "./shape_visitor.h"
 
 template<class ShapeConstraint>
-class ShapeSelectVisitor : public ShapeVisitor
+class SelectShapeVisitor : public ShapeVisitor
 {
 public:
-    ShapeSelectVisitor() : _result(nullptr) {}
-    ShapeSelectVisitor(ShapeConstraint constraint) : _result(nullptr), _constraint(constraint) {}
+    SelectShapeVisitor() : _result(nullptr) {}
+    SelectShapeVisitor(ShapeConstraint constraint) : _result(nullptr), _constraint(constraint) {}
     void visitCircle(Circle *circle);
     void visitRectangle(Rectangle *rectangle);
     void visitTriangle(Triangle *triangle);
@@ -24,7 +24,7 @@ private:
 };
 
 template<typename ShapeConstraint>
-void ShapeSelectVisitor<ShapeConstraint>::visitCircle(Circle * circle)
+void SelectShapeVisitor<ShapeConstraint>::visitCircle(Circle * circle)
 {
     if (_constraint(circle)) 
     {
@@ -33,7 +33,7 @@ void ShapeSelectVisitor<ShapeConstraint>::visitCircle(Circle * circle)
 }
 
 template<typename ShapeConstraint>
-void ShapeSelectVisitor<ShapeConstraint>::visitRectangle(Rectangle *rectangle)
+void SelectShapeVisitor<ShapeConstraint>::visitRectangle(Rectangle *rectangle)
 {
     if (_constraint(rectangle)) 
     {
@@ -42,7 +42,7 @@ void ShapeSelectVisitor<ShapeConstraint>::visitRectangle(Rectangle *rectangle)
 }
 
 template<typename ShapeConstraint>
-void ShapeSelectVisitor<ShapeConstraint>::visitTriangle(Triangle *triangle)
+void SelectShapeVisitor<ShapeConstraint>::visitTriangle(Triangle *triangle)
 {
     if (_constraint(triangle)) 
     {
@@ -51,7 +51,7 @@ void ShapeSelectVisitor<ShapeConstraint>::visitTriangle(Triangle *triangle)
 }
 
 template<typename ShapeConstraint>
-void ShapeSelectVisitor<ShapeConstraint>::visitCompoundShape(CompoundShape *cs)
+void SelectShapeVisitor<ShapeConstraint>::visitCompoundShape(CompoundShape *cs)
 {
     if (_constraint(cs)) 
     {
@@ -75,7 +75,7 @@ void ShapeSelectVisitor<ShapeConstraint>::visitCompoundShape(CompoundShape *cs)
 }
 
 template<typename ShapeConstraint>
-Shape* ShapeSelectVisitor<ShapeConstraint>::getShape()
+Shape* SelectShapeVisitor<ShapeConstraint>::getShape()
 {
     return _result;   
 }
