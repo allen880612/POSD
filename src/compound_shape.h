@@ -63,23 +63,11 @@ public:
                 if(!shapeIt->isDone())
                 {
                     (*it)->deleteShape(shape);
-                    std::cout << "nn" << std::endl;
                 }
                 delete shapeIt;
             }
             it++;
         }
-        // _shapes.remove(shape);
-        // for (Shape* s : _shapes)
-        // {
-        //     Iterator* shapeIt = s->createIterator();
-        //     // compound shape sholud check it's children
-        //     if (!shapeIt->isDone())
-        //     {
-        //         s->deleteShape(shape);
-        //     }
-        //     delete shapeIt;
-        // }
     }
 
     void accept(ShapeVisitor* visitor) override 
