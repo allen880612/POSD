@@ -1,6 +1,7 @@
 #pragma once
 #include "../src/circle.h"
 #include "../src/visitor/shape_info_visitor.h"
+#include "../src/visitor/select_shape_visitor.h"
 
 #define CIRCLE_EXCEPTION_MSG std::string("Circle created by positive double radius.")
 #define ACCURACY 0.001
@@ -70,7 +71,7 @@ TEST_F(CaseCircle, IsDoneOfCreateIteratorShouldBeTrue) {
     delete it;
 }
 
-TEST_F(CaseCircle, acceptShapeInfoVisitor) {
+TEST_F(CaseCircle, AcceptShapeInfoVisitor) {
     std::string expected = "Circle (10.00)\n";
     ShapeInfoVisitor visitor;
     
@@ -79,11 +80,12 @@ TEST_F(CaseCircle, acceptShapeInfoVisitor) {
     ASSERT_EQ(expected, visitor.getResult());
 }
 
-TEST_F(CaseCircle, acceptShapeSelectVisitor) {
-    std::string expected = "Circle (10.00)\n";
-    ShapeInfoVisitor visitor;
-    
+TEST_F(CaseCircle, AcceptSelectShapeVisitor) {
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Circle) == typeid(*shape);
+    });
+
     c10->accept(&visitor);
 
-    ASSERT_EQ(expected, visitor.getResult());
+    ASSERT_EQ(c10, visitor.getShape());
 }

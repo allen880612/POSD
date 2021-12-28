@@ -1,7 +1,5 @@
 #pragma once
 #include "../../src/compound_shape.h"
-#include "../../src/circle.h"
-#include "../../src/rectangle.h"
 #include "../../src/visitor/select_shape_visitor.h"
 #include <cmath>
 
@@ -94,6 +92,17 @@ TEST_F(CaseSelectShapeVisitor, VisitTriangle)
     ASSERT_EQ(triangle, visitor.getShape());
 }
 
+TEST_F(CaseSelectShapeVisitor, VisitCompound)
+{
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(CompoundShape) == typeid(*shape);
+    });
+
+    visitor.visitCompoundShape((CompoundShape*)cs);
+
+    ASSERT_EQ(cs, visitor.getShape());
+}
+
 TEST_F(CaseSelectShapeVisitor, SelectShapeOnCircleNotFound) {
     SelectShapeVisitor visitor( [] (Shape* shape) {
         return typeid(Rectangle) == typeid(*shape);
@@ -135,6 +144,18 @@ TEST_F(CaseSelectShapeVisitor, SelectTriangleInCompound) {
     visitor.visitCompoundShape((CompoundShape*)cs);
 
     ASSERT_EQ(triangle, visitor.getShape());
+}
+
+TEST_F(CaseSelectShapeVisitor, SelectCompoundInCompound) {
+    
+    CompoundShape* target = (CompoundShape*)innerCompound;
+    SelectShapeVisitor visitor([target](Shape* shape) {
+        return shape == target;
+    });
+
+    visitor.visitCompoundShape((CompoundShape*)cs);
+
+    ASSERT_EQ(innerCompound, visitor.getShape());
 }
 
 TEST_F(CaseSelectShapeVisitor, SelectInnerCircleInComplexCompound)

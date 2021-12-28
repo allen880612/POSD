@@ -1,6 +1,7 @@
 #pragma once
 #include "../src/rectangle.h"
 #include "../src/visitor/shape_info_visitor.h"
+#include "../src/visitor/select_shape_visitor.h"
 
 #define RECTANGLE_EXCEPTION_MSG std::string("Rectangle created by positive double length and width.")
 #define ACCURACY 0.001
@@ -98,11 +99,21 @@ TEST_F(CaseRectangle, IsDoneOfCreateIteratorShouldBeTrue) {
     delete it;
 }
 
-TEST_F(CaseRectangle, acceptShapeInfoVisitor) {
+TEST_F(CaseRectangle, AcceptShapeInfoVisitor) {
     std::string expected = "Rectangle (4.00 5.00)\n";
     ShapeInfoVisitor visitor;
     
     r4_5->accept(&visitor);
 
     ASSERT_EQ(expected, visitor.getResult());
+}
+
+TEST_F(CaseRectangle, AcceptSelectShapeVisitor) {
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Rectangle) == typeid(*shape);
+    });
+
+    r4_5->accept(&visitor);
+
+    ASSERT_EQ(r4_5, visitor.getShape());
 }

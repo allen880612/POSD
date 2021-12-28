@@ -1,6 +1,7 @@
 #pragma once
 #include "../src/triangle.h"
 #include "../src/visitor/shape_info_visitor.h"
+#include "../src/visitor/select_shape_visitor.h"
 
 #define TRIANGLE_EXCEPTION_MSG std::string("Triangle created by two non-parallel two dimensional _vectors.")
 #define ACCURACY 0.001
@@ -94,11 +95,21 @@ TEST_F(CaseTriangle, IsDoneOfCreateIteratorShouldBeTrue) {
     delete it;
 }
 
-TEST_F(CaseTriangle, acceptShapeInfoVisitor) {
+TEST_F(CaseTriangle, AcceptShapeInfoVisitor) {
     std::string expected = "Triangle ([3.00,0.00] [0.00,4.00])\n";
     ShapeInfoVisitor visitor;
     
     t34->accept(&visitor);
 
     ASSERT_EQ(expected, visitor.getResult());
+}
+
+TEST_F(CaseTriangle, AcceptSelectShapeVisitor) {
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Triangle) == typeid(*shape);
+    });
+
+    t34->accept(&visitor);
+
+    ASSERT_EQ(t34, visitor.getShape());
 }

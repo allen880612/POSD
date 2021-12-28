@@ -63,7 +63,6 @@ public:
                 if(!shapeIt->isDone())
                 {
                     (*it)->deleteShape(shape);
-                    std::cout << "nn" << std::endl;
                 }
                 delete shapeIt;
             }

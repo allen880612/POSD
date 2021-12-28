@@ -1,9 +1,7 @@
 #pragma once
 #include "../src/compound_shape.h"
-#include "../src/circle.h"
-#include "../src/rectangle.h"
-#include "../src/iterator/iterator.h"
 #include "../src/visitor/shape_info_visitor.h"
+#include "../src/visitor/select_shape_visitor.h"
 #include <cmath>
 
 #define ACCURACY 0.001
@@ -13,12 +11,20 @@ class CaseCompoundShape : public ::testing::Test
 protected:
     void SetUp() override
     {
+        cs = new CompoundShape();
         c1 = new Circle(1.0);
         r45 = new Rectangle(4.0, 5.0);
-        cs = new CompoundShape();
+        triangle = new Triangle(TwoDimensionalVector(3.0, 0.0), TwoDimensionalVector(0.0, 4.0));
 
         cs->addShape(c1);
         cs->addShape(r45);
+        cs->addShape(triangle);
+        compoundArea = M_PI + 4*5 + 4*3/2;
+
+        innerCompound = nullptr;
+        innerCircle = nullptr;
+        innerRectangle = nullptr;
+        innerTriangle = nullptr;
     }
 
     void TearDown() override
@@ -26,9 +32,31 @@ protected:
         delete cs;
     }
 
+    void addInnerCompound()
+    {
+        innerCompound = new CompoundShape();
+        innerCircle = new Circle(10.0);
+        innerRectangle = new Rectangle(4 ,5);
+        innerTriangle = new Triangle(TwoDimensionalVector(5.0, 0.0), TwoDimensionalVector(0.0, 12.0));
+
+        innerCompound->addShape(innerCircle);
+        innerCompound->addShape(innerRectangle);
+        innerCompound->addShape(innerTriangle);
+
+        cs->addShape(innerCompound);
+        compoundArea += 10*10*M_PI + 4*5 + 5*12/2;
+    }
+
+    Shape* cs;
     Shape* c1;
     Shape* r45;
-    Shape* cs;
+    Shape* triangle;
+    double compoundArea;
+
+    Shape* innerCompound;
+    Shape* innerCircle;
+    Shape* innerRectangle;
+    Shape* innerTriangle;
 };
 
 TEST_F(CaseCompoundShape, CreateSuccessfully)
@@ -46,6 +74,8 @@ TEST_F(CaseCompoundShape, Add)
     it->next();
     ASSERT_EQ(r45, it->currentItem());
     it->next();
+    ASSERT_EQ(triangle, it->currentItem());
+    it->next();
     ASSERT_EQ(c2, it->currentItem());
     delete it;
 }
@@ -57,67 +87,30 @@ TEST_F(CaseCompoundShape, Delete)
 
     ASSERT_EQ(r45, it->currentItem());
     it->next();
+    it->next();
     ASSERT_TRUE(it->isDone());
     delete it;
 }
 
 TEST_F(CaseCompoundShape, DeleteInnerShape)
 {
-    Shape* c = new Circle(2);
-    Shape* r = new Rectangle(3 ,4);
-    Shape* cs2 = new CompoundShape();
-    cs2->addShape(c);
-    cs2->addShape(r);
-    cs->addShape(cs2);
+    addInnerCompound();
 
-    const double originalArea = M_PI + 4*5 + 2*2 * M_PI + 3*4;
-    const double expectedArea = originalArea - 3*4;
-    cs->deleteShape(r);
+    const double originalArea = compoundArea;
+    const double expectedArea = originalArea - innerRectangle->area();
+    cs->deleteShape(innerRectangle);
 
     ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
 }
 
-// TEST_F(CaseCompoundShape, DeleteSeveralSameShape)
-// {
-//     cs->addShape(r45);
-//     cs->addShape(r45);
-
-//     double originalArea = M_PI + 4*5 + 4*5 * 2;
-//     double expectedArea = originalArea - 4*5 * 3;
-    
-//     ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
-//     cs->deleteShape(r45);
-//     ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
-// }
-
-// TEST_F(CaseCompoundShape, DeleteInnerSameShape)
-// {
-//     Shape* c = new Circle(2);
-//     Shape* r = new Rectangle(3 ,4);
-//     Shape* cs2 = new CompoundShape();
-    
-//     cs->addShape(r);
-//     cs2->addShape(c);
-//     cs2->addShape(r);
-//     cs2->addShape(r);
-//     cs->addShape(cs2);
-
-//     const double originalArea = M_PI + 4*5 + 2*2 * M_PI + 3*4 * 3;
-//     const double expectedArea = originalArea - 3*4 * 3;
-    
-//     ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
-//     cs->deleteShape(r);
-//     ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
-// }
-
 TEST_F(CaseCompoundShape, Area)
 {
-    ASSERT_NEAR(M_PI + 4*5, cs->area(), ACCURACY);
+    ASSERT_NEAR(compoundArea, cs->area(), ACCURACY);
 }
 
 TEST_F(CaseCompoundShape, Perimeter)
 {
-    ASSERT_NEAR(18+2*M_PI, cs->perimeter(), ACCURACY);
+    ASSERT_NEAR(18+2*M_PI+12, cs->perimeter(), ACCURACY);
 }
 
 TEST_F(CaseCompoundShape, Info)
@@ -132,6 +125,7 @@ TEST_F(CaseCompoundShape, SimpleInfoByVisitor)
     std::string expected = "CompoundShape {\n"
                            "  " + c1->info() +"\n"
                            "  " + r45->info() + "\n"
+                           "  " + triangle->info() + "\n"
                            "}\n";
     ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
     cs->accept(visitor);
@@ -141,26 +135,113 @@ TEST_F(CaseCompoundShape, SimpleInfoByVisitor)
 
 TEST_F(CaseCompoundShape, ComplexInfoByVisitor)
 {
-    Shape* c = new Circle(1.1);
-    Shape* r = new Rectangle(3.14 ,4);
+    addInnerCompound();
     std::string expected = "CompoundShape {\n"
                            "  " + c1->info() + "\n"
                            "  " + r45->info() + "\n"
+                           "  " + triangle->info() + "\n"
                            "  CompoundShape {\n"
-                           "    " + c->info() + "\n"
-                           "    " + r->info() + "\n"
+                           "    " + innerCircle->info() + "\n"
+                           "    " + innerRectangle->info() + "\n"
+                           "    " + innerTriangle->info() + "\n"
                            "  }\n"
                            "}\n";
-
-    Shape* cs2 = new CompoundShape();
-    cs2->addShape(c);
-    cs2->addShape(r);
-    cs->addShape(cs2);
 
     ShapeInfoVisitor* visitor = new ShapeInfoVisitor();
     cs->accept(visitor);
     ASSERT_EQ(expected, visitor->getResult());
     delete visitor;
+}
+
+TEST_F(CaseCompoundShape, AcceptSelectShapeVisitor)
+{
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(CompoundShape) == typeid(*shape);
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(cs, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectCircleInCompound) {
+    
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Circle) == typeid(*shape);
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(c1, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectRectangleInCompound) {
+    
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Rectangle) == typeid(*shape);
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(r45, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectTriangleInCompound) {
+    
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Triangle) == typeid(*shape);
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(triangle, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectCompoundInCompound) {
+    
+    CompoundShape* innerCompound = new CompoundShape();
+    cs->addShape(innerCompound);
+    SelectShapeVisitor visitor([innerCompound](Shape* shape) {
+        return shape == innerCompound;
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(innerCompound, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectInnerCircleInComplexCompound)
+{
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Circle) == typeid(*shape) && shape->area() > 5.0;
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(innerCircle, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectInnerRectangleInComplexCompound)
+{
+    SelectShapeVisitor visitor([](Shape* shape) {
+        return typeid(Rectangle) == typeid(*shape) && shape->area() < 20.0;
+    });
+
+    cs->accept(&visitor);
+
+    ASSERT_EQ(innerRectangle, visitor.getShape());
+}
+
+TEST_F(CaseCompoundShape, SelectInnerTriangleInComplexCompound)
+{
+    Triangle* find = (Triangle*)innerTriangle;
+    SelectShapeVisitor visitor([find](Shape* shape) {
+        return shape == find;
+    });
+
+    cs->accept(&visitor);
+    
+    ASSERT_EQ(innerTriangle, visitor.getShape());
 }
 
 // Should move to utility test
