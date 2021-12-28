@@ -10,6 +10,7 @@
 #include "./iterator/ut_null_iterator.h"
 #include "./iterator/ut_compound_iterator.h"
 #include "./visitor/ut_shape_info_visitor.h"
+#include "./visitor/ut_shape_select_visitor.h"
 
 #include "./builder/ut_shape_builder.h"
 #include "./builder/ut_shape_parser.h"

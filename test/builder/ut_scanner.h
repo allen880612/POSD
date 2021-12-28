@@ -179,12 +179,20 @@ TEST(CaseScanner, callNextShouldThrowExceptionWhileAlreadyDone) {
     ASSERT_ANY_THROW(sc.next());
 }
 
+TEST(CaseScanner, callNextDoubleShouldThrowExceptionWhileAlreadyDone) {
+    std::string input = "";
+    Scanner sc(input);
+
+    ASSERT_TRUE(sc.isDone());
+    ASSERT_ANY_THROW(sc.nextDouble());
+}
+
 TEST(CaseScanner, isDoneTest) {
     std::string input = "Circle 12.156";
     Scanner sc(input);
 
     sc.next();
-    // ASSERT_FALSE(sc.isDone());
+    ASSERT_FALSE(sc.isDone());
     ASSERT_NEAR(12.156, sc.nextDouble(), ACCURACY);
     ASSERT_TRUE(sc.isDone());
 }
