@@ -88,5 +88,7 @@ TEST_F(CaseTriangle, DeleteShouldThrowException) {
 }
 
 TEST_F(CaseTriangle, IsDoneOfCreateIteratorShouldBeTrue) {
-    ASSERT_TRUE(t34->createIterator()->isDone());
+    Iterator* it = t34->createIterator();
+    ASSERT_TRUE(it->isDone());
+    delete it;
 }

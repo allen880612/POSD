@@ -15,6 +15,7 @@ TEST(CaseParser, parseCircle) {
 
     ASSERT_EQ(typeid(Circle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseRectangle) {
@@ -27,6 +28,7 @@ TEST(CaseParser, parseRectangle) {
 
     ASSERT_EQ(typeid(Rectangle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseTriangle) {
@@ -39,6 +41,7 @@ TEST(CaseParser, parseTriangle) {
 
     ASSERT_EQ(typeid(Triangle), typeid(*s));
     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    delete s;
 }
 
 TEST(CaseParser, parseEmptyCompoundShape) {
@@ -54,6 +57,7 @@ TEST(CaseParser, parseEmptyCompoundShape) {
 
     Iterator* it = s->createIterator();
     ASSERT_TRUE(it->isDone());
+    delete s;
     delete it;
 }
 
@@ -70,6 +74,7 @@ TEST(CaseParser, parseCompoundShape) {
 
     Iterator* it = s->createIterator();
     ASSERT_FALSE(it->isDone());
+    delete s;
     delete it;
 }
 
@@ -86,6 +91,7 @@ TEST(CaseParser, parseComplexCompoundShape) {
 
     Iterator* it = s->createIterator();
     ASSERT_FALSE(it->isDone());
+    delete s;
     delete it;
 }
 

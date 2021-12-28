@@ -47,6 +47,7 @@ TEST_F(CaseCompoundShape, Add)
     ASSERT_EQ(r45, it->currentItem());
     it->next();
     ASSERT_EQ(c2, it->currentItem());
+    delete it;
 }
 
 TEST_F(CaseCompoundShape, Delete)
@@ -57,6 +58,7 @@ TEST_F(CaseCompoundShape, Delete)
     ASSERT_EQ(r45, it->currentItem());
     it->next();
     ASSERT_TRUE(it->isDone());
+    delete it;
 }
 
 TEST_F(CaseCompoundShape, DeleteInnerShape)
@@ -74,54 +76,6 @@ TEST_F(CaseCompoundShape, DeleteInnerShape)
 
     ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
 }
-
-TEST_F(CaseCompoundShape, DeleteSeveralSameShape)
-{
-    cs->addShape(r45);
-    cs->addShape(r45);
-
-    double originalArea = M_PI + 4*5 + 4*5 * 2;
-    double expectedArea = originalArea - 4*5 * 3;
-    
-    ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
-    cs->deleteShape(r45);
-    ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
-}
-
-TEST_F(CaseCompoundShape, DeleteInnerSameShape)
-{
-    Shape* c = new Circle(2);
-    Shape* r = new Rectangle(3 ,4);
-    Shape* cs2 = new CompoundShape();
-    
-    cs->addShape(r);
-    cs2->addShape(c);
-    cs2->addShape(r);
-    cs2->addShape(r);
-    cs->addShape(cs2);
-
-    const double originalArea = M_PI + 4*5 + 2*2 * M_PI + 3*4 * 3;
-    const double expectedArea = originalArea - 3*4 * 3;
-    
-    ASSERT_NEAR(originalArea, cs->area(), ACCURACY);
-    cs->deleteShape(r);
-    ASSERT_NEAR(expectedArea, cs->area(), ACCURACY);
-}
-
-// Should move to utility test
-// TEST_F(CaseCompoundShape, DeleteSelectedShape)
-// {   
-//     // delete c1 by area
-//     Shape* result = selectShape(cs, [&] (Shape* shape) -> bool {
-//         return typeid(*shape) == typeid(Circle);
-//     });
-
-//     cs->deleteShape(result);
-//     Iterator* it = cs->createIterator();
-
-//     // first item is r45, instead of c1 now
-//     ASSERT_EQ(r45, it->currentItem());
-// }
 
 TEST_F(CaseCompoundShape, Area)
 {

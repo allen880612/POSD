@@ -38,6 +38,7 @@ TEST_F(SuiteIterator, CompoundIteratorIsAIterator) {
     
     Iterator* it = new CompoundShapeIterator(shapes.begin(), shapes.end());
     ASSERT_EQ(typeid(CompoundShapeIterator), typeid(*it));
+    delete it;
 }
 
 TEST_F(SuiteIterator, CompoundIteratorConstructShouldNoThrow) {

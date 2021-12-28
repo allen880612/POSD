@@ -92,5 +92,7 @@ TEST_F(CaseRectangle, DeleteShouldThrowException) {
 }
 
 TEST_F(CaseRectangle, IsDoneOfCreateIteratorShouldBeTrue) {
-    ASSERT_TRUE(r4_5->createIterator()->isDone());
+    Iterator* it = r4_5->createIterator();
+    ASSERT_TRUE(it->isDone());
+    delete it;
 }
