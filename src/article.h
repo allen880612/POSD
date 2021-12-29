@@ -9,6 +9,7 @@ class Article
 public:
     virtual ~Article(){};
     virtual std::string getText() const = 0;
+    virtual std::string getInfo() const = 0;
     virtual int getLevel() const { return 0; }
     virtual Iterator *createIterator() = 0;
     virtual void accept(ArticleVisitor *visitor) = 0;
