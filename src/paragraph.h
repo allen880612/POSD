@@ -22,18 +22,18 @@ public:
         _articles.clear();
     }
 
-    // std::string getText() const override
-    // {
-    //     std::string result = getPrefix() + _text + "\n";
+    std::string getInfo() const override
+    {
+        std::string result = getPrefix() + _text + "\n";
 
-    //     for (Article *article : _articles)
-    //     {
-    //         result += article->getText();
-    //         if (article->getLevel() == 0 && article != _articles.back())
-    //             result += "\n";
-    //     }
-    //     return result;
-    // }
+        for (Article *article : _articles)
+        {
+            result += article->getText();
+            if (article->getLevel() == 0 && article != _articles.back())
+                result += "\n";
+        }
+        return result;
+    }
 
     std::string getText() const override
     {

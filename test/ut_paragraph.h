@@ -25,9 +25,11 @@ protected:
         p1->add(listItems[0]);
         p1->add(listItems[1]);
         p1->add(t1);
+
         p2->add(listItems[2]);
         p2->add(listItems[3]);
         p2->add(t2);
+        
         p1->add(p2);
     }
 
@@ -56,6 +58,39 @@ TEST_F(SuiteParagraph, GetLevel) {
     ASSERT_EQ(1, p1->getLevel());
     ASSERT_EQ(2, p2->getLevel());
     ASSERT_EQ(3, p3->getLevel());
+}
+
+TEST_F(SuiteParagraph, AddHighLevelParagraph) {
+    Article* addedParagraph = new Paragraph(4, "added paragraph");
+
+    ASSERT_NO_THROW(p3->add(addedParagraph));
+    Iterator* it = p3->createIterator();
+    ASSERT_EQ(addedParagraph, it->currentItem());
+
+    delete it;
+    // addedParagraph will delete by p3 in Teardown
+}
+
+TEST_F(SuiteParagraph, AddText) {
+    Article* addedText = new Text("added text");
+
+    ASSERT_NO_THROW(p3->add(addedText));
+    Iterator* it = p3->createIterator();
+    ASSERT_EQ(addedText, it->currentItem());
+
+    delete it;
+    // addedText will delete by p3 in Teardown
+}
+
+TEST_F(SuiteParagraph, AddListItem) {
+    Article* addedListItem = new ListItem("added ListItem");
+
+    ASSERT_NO_THROW(p3->add(addedListItem));
+    Iterator* it = p3->createIterator();
+    ASSERT_EQ(addedListItem, it->currentItem());
+
+    delete it;
+    // addedListItem will delete by p3 in Teardown
 }
 
 TEST_F(SuiteParagraph, AddLowerLevelShouldThrowException) {

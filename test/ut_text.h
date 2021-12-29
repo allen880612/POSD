@@ -1,6 +1,7 @@
 #pragma once
 #include "../src/text.h"
 #include "../src/iterator/null_iterator.h"
+#include "../src/visitor/markdown_visitor.h"
 
 class SuiteText : public ::testing::Test
 {
@@ -14,6 +15,7 @@ protected:
     void TearDown() override
     {
         delete text;
+        delete textAdded;
     }
 
     Article* text;

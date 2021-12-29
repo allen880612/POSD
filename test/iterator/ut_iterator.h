@@ -1,85 +1,83 @@
 #pragma once
 #include <list>
-#include "../src/iterator/null_iterator.h"
-#include "../src/iterator/compound_iterator.h"
-#include "../src/circle.h"
-#include "../src/rectangle.h"
+#include "../../src/iterator/compound_iterator.h"
+#include "../../src/paragraph.h"
+#include "../../src/list_item.h"
+#include "../../src/text.h"
 
-#define CompoundShapeIterator CompoundIterator<std::list<Shape*>::iterator>
+#define CompoundArticleIterator CompoundIterator<std::list<Article*>::iterator>
 
 class SuiteIterator : public ::testing::Test
 {
 protected:
     void SetUp() override
     {
-        nullIterator = new NullIterator();
-        c1 = new Circle(1.0);
-        r45 = new Rectangle(4.0, 5.0);
-        shapes.push_back(c1);
-        shapes.push_back(r45);
+        t = new Text("text");
+        li = new ListItem("listItem")
+        articles.push_back(t);
+        articles.push_back(li);
     }
 
     void TearDown() override
     {
-        delete nullIterator;
-        for (Shape* s : shapes)
+        for (Article* s : articles)
         {
             delete s;
         }
-        shapes.clear();
+        articles.clear();
     }
 
-    std::list<Shape*> shapes;
-    Shape* c1;
-    Shape* r45;
+    std::list<Article*> articles;
+    Article* t;
+    Article* li;
 };
 
 TEST_F(SuiteIterator, CompoundIteratorIsAIterator) {
     
-    Iterator* it = new CompoundShapeIterator(shapes.begin(), shapes.end());
-    ASSERT_EQ(typeid(CompoundShapeIterator), typeid(*it));
+    Iterator* it = new CompoundArticleIterator(articles.begin(), articles.end());
+    ASSERT_EQ(typeid(CompoundArticleIterator), typeid(*it));
     delete it;
 }
 
 TEST_F(SuiteIterator, CompoundIteratorConstructShouldNoThrow) {
-    ASSERT_NO_THROW(CompoundShapeIterator it(shapes.begin(), shapes.end()));
+    ASSERT_NO_THROW(CompoundArticleIterator it(articles.begin(), articles.end()));
 }
 
 TEST_F(SuiteIterator, CompoundIteratorGetCurrentItemBeforeFirstShouldStillGetFirstItem) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
-    ASSERT_EQ(c1, it.currentItem());
+    CompoundArticleIterator it(articles.begin(), articles.end());
+    ASSERT_EQ(t, it.currentItem());
 }
 
 TEST_F(SuiteIterator, CompoundIteratorShouldGetCorrectItemAfterNext) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
-    ASSERT_EQ(c1, it.currentItem());
+    ASSERT_EQ(t, it.currentItem());
     it.next();
-    ASSERT_EQ(r45, it.currentItem());
+    ASSERT_EQ(li, it.currentItem());
 }
 
 TEST_F(SuiteIterator, CompoundIteratorShouldGetFirstItemAfterCallFirst) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
-    ASSERT_EQ(c1, it.currentItem());
+    ASSERT_EQ(t, it.currentItem());
     it.next();
-    ASSERT_EQ(r45, it.currentItem());
+    ASSERT_EQ(li, it.currentItem());
     it.first();
-    ASSERT_EQ(c1, it.currentItem());
+    ASSERT_EQ(t, it.currentItem());
 }
 
 TEST_F(SuiteIterator, CompoundIteratorIsDoneShouldBeTrue) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
-    ASSERT_EQ(c1, it.currentItem());
+    ASSERT_EQ(t, it.currentItem());
     it.next();
-    ASSERT_EQ(r45, it.currentItem());
+    ASSERT_EQ(li, it.currentItem());
     it.next();
     ASSERT_TRUE(it.isDone());
 }
 
 TEST_F(SuiteIterator, CompoundIteratorNextShouldThrowExceptionWhileIsDone) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
     it.next();
     it.next();
@@ -88,7 +86,7 @@ TEST_F(SuiteIterator, CompoundIteratorNextShouldThrowExceptionWhileIsDone) {
 }
 
 TEST_F(SuiteIterator, CompoundIteratorCurrentItemShouldThrowExceptionWhileIsDone) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
     it.next();
     it.next();
@@ -97,7 +95,7 @@ TEST_F(SuiteIterator, CompoundIteratorCurrentItemShouldThrowExceptionWhileIsDone
 }
 
 TEST_F(SuiteIterator, CompoundIteratorIsDone) {
-    CompoundShapeIterator it(shapes.begin(), shapes.end());
+    CompoundArticleIterator it(articles.begin(), articles.end());
     
     ASSERT_FALSE(it.isDone());
     ASSERT_NO_THROW(it.next());
