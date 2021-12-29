@@ -109,7 +109,6 @@ void ArticleScanner::updatePos() {
 
     while (!integers.empty() && integers.front().first < _pos) {
         std::cout << "remove" << integers.front().first << integers.front().second << std::endl;
-        strings.pop_front();
         integers.pop_front();
     }
 }
