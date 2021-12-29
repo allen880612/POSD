@@ -1,5 +1,6 @@
 #pragma once
 #include "../src/list_item.h"
+#include "../src/visitor/markdown_visitor.h"
 
 class SuiteListItem : public ::testing::Test
 {
@@ -46,4 +47,13 @@ TEST_F(SuiteListItem, IteratorIsdoneShouldBeTrue) {
     Iterator* it = listItem->createIterator();
     ASSERT_TRUE(it->isDone());
     delete it;
+}
+
+TEST_F(SuiteListItem, AcceptMarkdownVisitor) {
+    MarkdownVisitor visitor;
+    std::string expected = "- content\n";
+    
+    listItem->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
 }

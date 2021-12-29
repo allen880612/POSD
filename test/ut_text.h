@@ -49,3 +49,12 @@ TEST_F(SuiteText, IteratorIsdoneShouldBeTrue) {
     ASSERT_TRUE(it->isDone());
     delete it;
 }
+
+TEST_F(SuiteText, AcceptMarkdownVisitor) {
+    MarkdownVisitor visitor;
+    std::string expected = "content\n";
+    
+    text->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
+}

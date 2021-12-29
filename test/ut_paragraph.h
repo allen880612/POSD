@@ -3,6 +3,8 @@
 #include "../src/list_item.h"
 #include "../src/text.h"
 #include "../src/iterator/compound_iterator.h"
+#include "../src/visitor/markdown_visitor.h"
+
 #include <vector>
 
 class SuiteParagraph : public ::testing::Test
@@ -137,4 +139,19 @@ TEST_F(SuiteParagraph, iteratorShouldContainCorrectItem) {
     it->next();
     ASSERT_TRUE(it->isDone());
     delete it;
+}
+
+TEST_F(SuiteParagraph, AcceptMarkdownVisitor) {
+    MarkdownVisitor visitor;
+    std::string expected = "# title\n"
+                           "- list1\n"
+                           "- list2\n"
+                           "text\n"
+                           "## title2\n"
+                           "- list3\n"
+                           "- list4\n"
+                           "sub text\n";
+    p1->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
 }
