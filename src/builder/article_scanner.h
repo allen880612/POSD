@@ -3,9 +3,9 @@
 #include <list>
 #include <iostream>
 
-class Scanner {
+class ArticleScanner {
 public:
-    Scanner(std::string input) : _input(input) {
+    ArticleScanner(std::string input) : _input(input) {
         buildTokens();
         buildDoubles();
     }
@@ -20,13 +20,13 @@ private:
     void buildDoubles();
 
     std::string _input;
-    const std::list<std::string> tokenList = {"Circle", "Rectangle", "Triangle", "CompoundShape", "(", ")", "[", "]", "{", "}", ","};
+    const std::vector<std::string> tokenList = {"ListItem", "Text", "Paragraph", "(", ")", "{", "}"};
     std::list<std::string> tokens;
     std::list<double> doubles;
 
 };
 
-void Scanner::buildTokens() {
+void ArticleScanner::buildTokens() {
     std::string::size_type pos = 0;
 
     while (pos < _input.length()) {
@@ -43,7 +43,7 @@ void Scanner::buildTokens() {
     }
 }
 
-void Scanner::buildDoubles() {
+void ArticleScanner::buildDoubles() {
     std::string::size_type pos = 0;
     std::string numStr = "";
 
@@ -61,7 +61,7 @@ void Scanner::buildDoubles() {
     if (numStr != "") doubles.push_back(std::stod(numStr));
 }
 
-std::string Scanner::next() {
+std::string ArticleScanner::next() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
     std::string result = tokens.front();
@@ -70,7 +70,7 @@ std::string Scanner::next() {
     return result;
 }
 
-double Scanner::nextDouble() {
+double ArticleScanner::nextDouble() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
     double result = doubles.front();
@@ -79,6 +79,6 @@ double Scanner::nextDouble() {
     return result;
 }
 
-bool Scanner::isDone() {
+bool ArticleScanner::isDone() {
     return tokens.empty() && doubles.empty();
 }

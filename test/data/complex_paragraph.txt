@@ -1,0 +1,8 @@
+Paragraph (1 "This is a complex paragraph") {
+    ListItem ("This is a list item")
+    Paragraph (2 "This is an inner paragraph") {
+        Text ("This is an inner text")
+        ListItem ("This is an inner list item")
+    }
+    Text ("This is a text")
+}

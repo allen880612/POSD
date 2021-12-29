@@ -1,20 +1,20 @@
 #pragma once
-#include "../shape.h"
+#include "../article.h"
 #include "../builder/scanner.h"
-#include "../builder/shape_builder.h"
+#include "../builder/article_builder.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
-class ShapeParser{
+class ArticleParser {
 public:
     // `filePath` is a relative path of makefile
-    ShapeParser(std::string filePath) {
+    ArticleParser(std::string filePath) {
         _sc = new Scanner(readFile(filePath));
         _builder = ShapeBuilder::getInstance();
     }
 
-    ~ShapeParser() {
+    ~ArticleParser() {
         delete _sc;
         _builder->reset();
     }
@@ -30,7 +30,7 @@ private:
     Scanner* _sc;
 };
 
-std::string ShapeParser::readFile(std::string filePath) {
+std::string ArticleParser::readFile(std::string filePath) {
     auto ss = std::ostringstream();
     std::ifstream file;
     file.open(filePath);
@@ -44,7 +44,7 @@ std::string ShapeParser::readFile(std::string filePath) {
     }
 }
 
-void ShapeParser::parse() {
+void ArticleParser::parse() {
     while (!_sc->isDone()) {
         std::string token = _sc->next();
         if (token == "Circle") {
