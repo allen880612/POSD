@@ -19,7 +19,6 @@ public:
 
     void visitParagraph(Paragraph *p) override
     {
-
         _result += getPrefix(p->getLevel()) + p->getText() + "\n";
         Iterator *it = p->createIterator();
         while (!it->isDone())

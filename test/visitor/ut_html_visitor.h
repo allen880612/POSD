@@ -26,9 +26,11 @@ protected:
         p1->add(listItems[0]);
         p1->add(listItems[1]);
         p1->add(t1);
+
         p2->add(listItems[2]);
         p2->add(listItems[3]);
         p2->add(t2);
+        
         p1->add(p2);
     }
 
