@@ -120,9 +120,9 @@ std::string ArticleScanner::nextToken() {
     std::string result = tokens.front().second;
     _pos = tokens.front().first;
     tokens.pop_front();
-    updatePos();
+    // updatePos();
 
-    std::cout << "sc " << result << std::endl;
+    // std::cout << "sc " << result << std::endl;
     return result;
 }
 
@@ -132,8 +132,8 @@ std::string ArticleScanner::nextStr() {
     std::string result = strings.front().second;
     _pos = strings.front().first;
     strings.pop_front();
-    updatePos();
-    std::cout << "sc " <<result << std::endl;
+    // updatePos();
+    // std::cout << "sc " <<result << std::endl;
     return result;
 }
 
@@ -143,8 +143,8 @@ int ArticleScanner::nextInt() {
     int result = integers.front().second;
     _pos = integers.front().first;
     integers.pop_front();
-    updatePos();
-    std::cout << "sc " << result << std::endl;
+    // updatePos();
+    // std::cout << "sc " << result << std::endl;
     return result;
 }
 
