@@ -2,6 +2,7 @@
 #include "../src/text.h"
 #include "../src/iterator/null_iterator.h"
 #include "../src/visitor/markdown_visitor.h"
+#include "../src/visitor/html_visitor.h"
 
 class SuiteText : public ::testing::Test
 {
@@ -53,6 +54,15 @@ TEST_F(SuiteText, IteratorIsdoneShouldBeTrue) {
 TEST_F(SuiteText, AcceptMarkdownVisitor) {
     MarkdownVisitor visitor;
     std::string expected = "content\n";
+    
+    text->accept(&visitor);
+
+    ASSERT_EQ(expected, visitor.getResult());
+}
+
+TEST_F(SuiteText, AcceptHtmlVisitor) {
+    HtmlVisitor visitor;
+    std::string expected = "<span>content</span>";
     
     text->accept(&visitor);
 

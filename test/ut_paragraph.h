@@ -4,6 +4,7 @@
 #include "../src/text.h"
 #include "../src/iterator/compound_iterator.h"
 #include "../src/visitor/markdown_visitor.h"
+#include "../src/visitor/html_visitor.h"
 
 #include <vector>
 
