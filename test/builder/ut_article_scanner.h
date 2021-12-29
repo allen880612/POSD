@@ -16,6 +16,17 @@ TEST(CaseScanner, scanText) {
     ASSERT_TRUE(sc.isDone());
 }
 
+TEST(CaseScanner, ScanIllegalWordShouldIgnore) {
+    std::string input = "I ListItem eee {\"string\"555\"next\"}too6a";
+    ArticleScanner sc(input);
+
+    ASSERT_EQ("ListItem", sc.nextToken());
+    ASSERT_EQ("string", sc.nextStr());
+    ASSERT_EQ("}", sc.nextToken());
+    ASSERT_EQ(6, sc.nextInt());
+    ASSERT_TRUE(sc.isDone());
+}
+
 // TEST(CaseScanner, scanCircleWithNoise) {
 //     std::string input = "I Circle eee ,tt{t3.14159a";
 //     ArticleScanner sc(input);

@@ -47,11 +47,13 @@ std::string ArticleParser::readFile(std::string filePath) {
 void ArticleParser::parse() {
     while (!_sc->isDone()) {
         std::string token = _sc->nextToken();
+        std::cout << "token: " << token << std::endl;
         if (token == "ListItem") {
             _builder->buildListItem(_sc->nextStr());
         } else if (token == "Text") {
             _builder->buildText(_sc->nextStr());
         } else if (token == "Paragraph") {
+            std::cout << "start Build" << std::endl;
             _builder->buildParagraphBegin(_sc->nextInt(), _sc->nextStr());
         } else if (token == "}") {
             _builder->buildParagraphEnd();

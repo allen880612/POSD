@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <utility>
 #include <iostream>
 
 class ArticleScanner {
@@ -21,12 +22,14 @@ private:
     void buildTokens();
     void buildStrings();
     void buildIntegers();
+    void updatePos();
 
-    std::string _input;
+    std::string _input = "";
+    std::string::size_type _pos = 0;
     const std::vector<std::string> tokenList = {"ListItem", "Text", "Paragraph", "(", ")", "{", "}"};
-    std::list<std::string> tokens;
-    std::list<std::string> strings;
-    std::list<int> integers;
+    std::list<std::pair<std::string::size_type, std::string>> tokens;
+    std::list<std::pair<std::string::size_type, std::string>> strings;
+    std::list<std::pair<std::string::size_type, int>> integers;
 
 };
 
@@ -38,8 +41,9 @@ void ArticleScanner::buildTokens() {
         for(auto token: tokenList) {
             isToken = _input.compare(pos, token.length(), token) == 0;
             if(isToken) {
+                tokens.push_back(std::make_pair(pos, token));
                 pos = pos + token.length();
-                tokens.push_back(token);
+                // tokens.push_back(token);
                 break;
             }
         }
@@ -57,7 +61,7 @@ void ArticleScanner::buildStrings() {
         
         if(isQuote) {
             if (isSaving) {
-                strings.push_back(str);
+                strings.push_back(std::make_pair(pos-str.length(), str));
                 str = "";
             }
             isSaving = !isSaving;
@@ -68,8 +72,9 @@ void ArticleScanner::buildStrings() {
         pos++;
     }
     // end of string
-    if (str != "") 
-        strings.push_back(str);
+    if (str != "") {
+        strings.push_back(std::make_pair(pos - str.length(), str));
+    }
 }
 
 void ArticleScanner::buildIntegers() {
@@ -81,42 +86,68 @@ void ArticleScanner::buildIntegers() {
         if(isDigitOrDot) {
             numStr += _input[pos];
         } else if (numStr != "") {
-            integers.push_back(std::stod(numStr));
+            integers.push_back(std::make_pair(pos - numStr.length(), std::stod(numStr)));
             numStr = "";
         }
         pos++;
     }
     // end of string
-    if (numStr != "") integers.push_back(std::stod(numStr));
+    if (numStr != "") integers.push_back(std::make_pair(pos - numStr.length(), std::stod(numStr)));
+}
+
+void ArticleScanner::updatePos() {
+    std::cout << "cur Pos" << _pos << std::endl;
+    while (!tokens.empty() && tokens.front().first < _pos) {
+        std::cout << "remove" << tokens.front().first << tokens.front().second << std::endl;
+        tokens.pop_front();
+    }
+
+    while (!strings.empty() && strings.front().first < _pos) {
+        std::cout << "remove" << strings.front().first << strings.front().second << std::endl;
+        strings.pop_front();
+    }
+
+    while (!integers.empty() && integers.front().first < _pos) {
+        std::cout << "remove" << integers.front().first << integers.front().second << std::endl;
+        strings.pop_front();
+        integers.pop_front();
+    }
 }
 
 std::string ArticleScanner::nextToken() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
-    std::string result = tokens.front();
+    std::string result = tokens.front().second;
+    _pos = tokens.front().first;
     tokens.pop_front();
-    // std::cout << result << std::endl;
+    updatePos();
+
+    std::cout << "sc " << result << std::endl;
     return result;
 }
 
 std::string ArticleScanner::nextStr() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
-    std::string result = strings.front();
+    std::string result = strings.front().second;
+    _pos = strings.front().first;
     strings.pop_front();
-    // std::cout << result << std::endl;
+    updatePos();
+    std::cout << "sc " <<result << std::endl;
     return result;
 }
 
 int ArticleScanner::nextInt() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
-    int result = integers.front();
+    int result = integers.front().second;
+    _pos = integers.front().first;
     integers.pop_front();
-    // std::cout << result << std::endl;
+    updatePos();
+    std::cout << "sc " << result << std::endl;
     return result;
 }
 
 bool ArticleScanner::isDone() {
-    return tokens.empty() && integers.empty();
+    return tokens.empty() && integers.empty() && strings.empty();
 }
