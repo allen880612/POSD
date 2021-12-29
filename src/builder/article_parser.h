@@ -1,6 +1,6 @@
 #pragma once
 #include "../article.h"
-#include "../builder/scanner.h"
+#include "../builder/article_scanner.h"
 #include "../builder/article_builder.h"
 #include <fstream>
 #include <sstream>
@@ -10,8 +10,8 @@ class ArticleParser {
 public:
     // `filePath` is a relative path of makefile
     ArticleParser(std::string filePath) {
-        _sc = new Scanner(readFile(filePath));
-        _builder = ShapeBuilder::getInstance();
+        _sc = new ArticleScanner(readFile(filePath));
+        _builder = ArticleBuilder::getInstance();
     }
 
     ~ArticleParser() {
@@ -19,15 +19,15 @@ public:
         _builder->reset();
     }
     void parse();
-    Shape* getShape() { 
-        Shape* result = _builder->getShape();
+    Article* getArticle() { 
+        Article* result = _builder->getArticle();
         _builder->reset();
         return result;
     }
 private:
     std::string readFile(std::string filePath);
-    ShapeBuilder* _builder;
-    Scanner* _sc;
+    ArticleBuilder* _builder;
+    ArticleScanner* _sc;
 };
 
 std::string ArticleParser::readFile(std::string filePath) {
@@ -46,21 +46,15 @@ std::string ArticleParser::readFile(std::string filePath) {
 
 void ArticleParser::parse() {
     while (!_sc->isDone()) {
-        std::string token = _sc->next();
-        if (token == "Circle") {
-            _builder->buildCircle(_sc->nextDouble());
-        } else if (token == "Rectangle") {
-            _builder->buildRectangle(_sc->nextDouble(), _sc->nextDouble());
-        } else if (token == "Triangle") {
-            double x1 = _sc->nextDouble();
-            double y1 = _sc->nextDouble();
-            double x2 = _sc->nextDouble();
-            double y2 = _sc->nextDouble();
-            _builder->buildTriangle(x1, y1, x2, y2);
-        } else if (token == "CompoundShape") {
-            _builder->buildCompoundBegin();
+        std::string token = _sc->nextToken();
+        if (token == "ListItem") {
+            _builder->buildListItem(_sc->nextStr());
+        } else if (token == "Text") {
+            _builder->buildText(_sc->nextStr());
+        } else if (token == "Paragraph") {
+            _builder->buildParagraphBegin(_sc->nextInt(), _sc->nextStr());
         } else if (token == "}") {
-            _builder->buildCompoundEnd();
+            _builder->buildParagraphEnd();
         }
     }
 }

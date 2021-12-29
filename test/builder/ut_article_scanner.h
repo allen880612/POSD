@@ -1,22 +1,24 @@
 #pragma once
-#include "../../src/builder/scanner.h"
+#include "../../src/builder/article_scanner.h"
 
 #define ACCURACY 0.001
 
-// TEST(CaseScanner, scanCircle) {
-//     std::string input = "Circle (3.14159)";
-//     Scanner sc(input);
 
-//     ASSERT_EQ("Circle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(3.14159, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+
+TEST(CaseScanner, scanText) {
+    std::string input = "Text (\"This is a text\")";
+    ArticleScanner sc(input);
+
+    ASSERT_EQ("Text", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is a text", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_TRUE(sc.isDone());
+}
 
 // TEST(CaseScanner, scanCircleWithNoise) {
 //     std::string input = "I Circle eee ,tt{t3.14159a";
-//     Scanner sc(input);
+//     ArticleScanner sc(input);
 
 //     ASSERT_EQ("Circle", sc.next());
 //     ASSERT_EQ(",", sc.next());
@@ -25,174 +27,127 @@
 //     ASSERT_TRUE(sc.isDone());
 // }
 
-// TEST(CaseScanner, scanRectangle) {
-//     std::string input = "Rectangle (3.14 4.0)";
-//     Scanner sc(input);
+TEST(CaseScanner, scanListItem) {
+    std::string input = "ListItem (\"This is an list item\")";
+    ArticleScanner sc(input);
 
-//     ASSERT_EQ("Rectangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(3.14, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("ListItem", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is an list item", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_TRUE(sc.isDone());
+}
 
-// TEST(CaseScanner, scanRectangleWithNoise) {
-//     std::string input = "!@ RectangleD, G3.14ZZ4.0 d";
-//     Scanner sc(input);
+TEST(CaseScanner, scanEmptyParagraph) {
+    std::string input = "Paragraph (1 \"This is an empty paragraph\") {}";
+    ArticleScanner sc(input);
 
-//     ASSERT_EQ("Rectangle", sc.next());
-//     ASSERT_EQ(",", sc.next());
-//     ASSERT_NEAR(3.14, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("Paragraph", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ(1, sc.nextInt());
+    ASSERT_EQ("This is an empty paragraph", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("{", sc.nextToken());
+    ASSERT_EQ("}", sc.nextToken());
+    ASSERT_TRUE(sc.isDone());
+}
 
-// TEST(CaseScanner, scanTriangle) {
-//     std::string input = "Triangle ([3.0 0.0] [0.0 4.0])";
-//     Scanner sc(input);
+TEST(CaseScanner, scanSimpleParagraph) {
+    std::string input = "Paragraph (1 \"This is a simple paragraph\") {\n"
+                        "\tListItem (\"This is a list item\")\n"
+                        "\tText (\"This is a text\")\n"
+                        "}";
+    ArticleScanner sc(input);
 
-//     ASSERT_EQ("Triangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("Paragraph", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ(1, sc.nextInt());
+    ASSERT_EQ("This is a simple paragraph", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("{", sc.nextToken());
+    ASSERT_EQ("ListItem", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is a list item", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("Text", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is a text", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
 
-// TEST(CaseScanner, scanTriangleWithNoise) {
-//     std::string input = "AUAUTriangle (d [3.0 peko 0.0] [0.0 hihi 4.0] D)D";
-//     Scanner sc(input);
+    ASSERT_EQ("}", sc.nextToken());
+    ASSERT_TRUE(sc.isDone());
+}
 
-//     ASSERT_EQ("Triangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+TEST(CaseScanner, scanComplexParagraph) {
+    std::string input = "Paragraph (1 \"This is a simple paragraph\") {\n"
+                        "\tListItem (\"This is a list item\")\n"
+                        "\tParagraph (2 \"This is an inner paragraph\") {\n"
+                        "\t\tText (\"This is an inner text\")\n"
+                        "\t\tListItem (\"This is an inner list item\")\n"
+                        "\t}\n"
+                        "Text (\"This is a text\")\n"
+                        "}";
+    ArticleScanner sc(input);
 
-// TEST(CaseScanner, scanEmptyCompoundShape) {
-//     std::string input = "CompoundShape {}";
-//     Scanner sc(input);
+    ASSERT_EQ("Paragraph", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ(1, sc.nextInt());
+    ASSERT_EQ("This is a simple paragraph", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("{", sc.nextToken());
+    
+    ASSERT_EQ("ListItem", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is a list item", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
 
-//     ASSERT_EQ("CompoundShape", sc.next());
-//     ASSERT_EQ("{", sc.next());
-//     ASSERT_EQ("}", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("Paragraph", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ(2, sc.nextInt());
+    ASSERT_EQ("This is an inner paragraph", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("{", sc.nextToken());
 
-// TEST(CaseScanner, scanEmptyCompoundShapeWithNoise) {
-//     std::string input = "CompoundShape Circular{SELECT*FROM USER WHERE 1;--}recursion";
-//     Scanner sc(input);
+    ASSERT_EQ("Text", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is an inner text", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
 
-//     ASSERT_EQ("CompoundShape", sc.next());
-//     ASSERT_EQ("{", sc.next());
-//     ASSERT_NEAR(1.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("}", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("ListItem", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is an inner list item", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
+    ASSERT_EQ("}", sc.nextToken());
 
-// TEST(CaseScanner, scanComplexCompoundShape) {
-//     std::string input = "CompoundShape {"
-//                         "Circle (1.0)"
-//                         "Triangle ([3,0] [0,4])"
-//                         "CompoundShape {"
-//                             "Circle (1.0)"
-//                             "Rectangle (3.14 4.00)"
-//                             "Triangle ([3,0] [0,4])"
-//                         "}"
-//                         "Rectangle (3.14 4.00)"
-//                         "}";
-//     Scanner sc(input);
+    ASSERT_EQ("Text", sc.nextToken());
+    ASSERT_EQ("(", sc.nextToken());
+    ASSERT_EQ("This is a text", sc.nextStr());
+    ASSERT_EQ(")", sc.nextToken());
 
-//     ASSERT_EQ("CompoundShape", sc.next());
-//     ASSERT_EQ("{", sc.next());
-//     ASSERT_EQ("Circle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(1.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("Triangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(",", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(",", sc.next());
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("CompoundShape", sc.next());
-//     ASSERT_EQ("{", sc.next());
-//     ASSERT_EQ("Circle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(1.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("Rectangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(3.14, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.00, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("Triangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(3.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(",", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ("[", sc.next());
-//     ASSERT_NEAR(0.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(",", sc.next());
-//     ASSERT_NEAR(4.0, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ("]", sc.next());
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("}", sc.next());
-//     ASSERT_EQ("Rectangle", sc.next());
-//     ASSERT_EQ("(", sc.next());
-//     ASSERT_NEAR(3.14, sc.nextDouble(), ACCURACY);
-//     ASSERT_NEAR(4.00, sc.nextDouble(), ACCURACY);
-//     ASSERT_EQ(")", sc.next());
-//     ASSERT_EQ("}", sc.next());
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_EQ("}", sc.nextToken());
+    ASSERT_TRUE(sc.isDone());
+}
 
-// TEST(CaseScanner, callNextShouldThrowExceptionWhileAlreadyDone) {
-//     std::string input = "";
-//     Scanner sc(input);
+TEST(CaseScanner, callNextTokenShouldThrowExceptionWhileAlreadyDone) {
+    std::string input = "";
+    ArticleScanner sc(input);
 
-//     ASSERT_TRUE(sc.isDone());
-//     ASSERT_ANY_THROW(sc.next());
-// }
+    ASSERT_TRUE(sc.isDone());
+    ASSERT_ANY_THROW(sc.nextToken());
+}
 
-// TEST(CaseScanner, callNextDoubleShouldThrowExceptionWhileAlreadyDone) {
-//     std::string input = "";
-//     Scanner sc(input);
+TEST(CaseScanner, callNextIntShouldThrowExceptionWhileAlreadyDone) {
+    std::string input = "";
+    ArticleScanner sc(input);
 
-//     ASSERT_TRUE(sc.isDone());
-//     ASSERT_ANY_THROW(sc.nextDouble());
-// }
+    ASSERT_TRUE(sc.isDone());
+    ASSERT_ANY_THROW(sc.nextInt());
+}
 
-// TEST(CaseScanner, isDoneTest) {
-//     std::string input = "Circle 12.156";
-//     Scanner sc(input);
+TEST(CaseScanner, callNextStrShouldThrowExceptionWhileAlreadyDone) {
+    std::string input = "";
+    ArticleScanner sc(input);
 
-//     sc.next();
-//     ASSERT_FALSE(sc.isDone());
-//     ASSERT_NEAR(12.156, sc.nextDouble(), ACCURACY);
-//     ASSERT_TRUE(sc.isDone());
-// }
+    ASSERT_TRUE(sc.isDone());
+    ASSERT_ANY_THROW(sc.nextStr());
+}

@@ -1,6 +1,6 @@
 #pragma once
-#include "../../src/builder/shape_parser.h"
-#include "../../src/compound_shape.h"
+#include "../../src/builder/article_parser.h"
+#include "../../src/article.h"
 #include <cmath>
 
 #define ACCURACY 0.001

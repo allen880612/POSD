@@ -7,22 +7,26 @@ class ArticleScanner {
 public:
     ArticleScanner(std::string input) : _input(input) {
         buildTokens();
-        buildDoubles();
+        buildStrings();
+        buildIntegers();
     }
 
-    std::string next();
-    double nextDouble();
+    std::string nextToken();
+    std::string nextStr();
+    int nextInt();
     bool isDone();
 
 
 private:
     void buildTokens();
-    void buildDoubles();
+    void buildStrings();
+    void buildIntegers();
 
     std::string _input;
     const std::vector<std::string> tokenList = {"ListItem", "Text", "Paragraph", "(", ")", "{", "}"};
     std::list<std::string> tokens;
-    std::list<double> doubles;
+    std::list<std::string> strings;
+    std::list<int> integers;
 
 };
 
@@ -43,7 +47,32 @@ void ArticleScanner::buildTokens() {
     }
 }
 
-void ArticleScanner::buildDoubles() {
+void ArticleScanner::buildStrings() {
+    std::string::size_type pos = 0;
+    std::string str = "";
+    bool isSaving = false;
+
+    while (pos < _input.length()) {
+        bool isQuote = _input[pos] == '\"';
+        
+        if(isQuote) {
+            if (isSaving) {
+                strings.push_back(str);
+                str = "";
+            }
+            isSaving = !isSaving;
+        } 
+        else if (isSaving) {
+            str += _input[pos];
+        }
+        pos++;
+    }
+    // end of string
+    if (str != "") 
+        strings.push_back(str);
+}
+
+void ArticleScanner::buildIntegers() {
     std::string::size_type pos = 0;
     std::string numStr = "";
 
@@ -52,16 +81,16 @@ void ArticleScanner::buildDoubles() {
         if(isDigitOrDot) {
             numStr += _input[pos];
         } else if (numStr != "") {
-            doubles.push_back(std::stod(numStr));
+            integers.push_back(std::stod(numStr));
             numStr = "";
         }
         pos++;
     }
     // end of string
-    if (numStr != "") doubles.push_back(std::stod(numStr));
+    if (numStr != "") integers.push_back(std::stod(numStr));
 }
 
-std::string ArticleScanner::next() {
+std::string ArticleScanner::nextToken() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
     std::string result = tokens.front();
@@ -70,15 +99,24 @@ std::string ArticleScanner::next() {
     return result;
 }
 
-double ArticleScanner::nextDouble() {
+std::string ArticleScanner::nextStr() {
     if (isDone()) throw std::string("Already point to end of Input.");
 
-    double result = doubles.front();
-    doubles.pop_front();
+    std::string result = strings.front();
+    strings.pop_front();
+    // std::cout << result << std::endl;
+    return result;
+}
+
+int ArticleScanner::nextInt() {
+    if (isDone()) throw std::string("Already point to end of Input.");
+
+    int result = integers.front();
+    integers.pop_front();
     // std::cout << result << std::endl;
     return result;
 }
 
 bool ArticleScanner::isDone() {
-    return tokens.empty() && doubles.empty();
+    return tokens.empty() && integers.empty();
 }
