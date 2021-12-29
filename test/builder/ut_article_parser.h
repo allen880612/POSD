@@ -5,98 +5,125 @@
 
 #define ACCURACY 0.001
 
-// TEST(CaseParser, parseCircle) {
-//     std::string path = "test/data/circle.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = M_PI;
-//     Shape* s = nullptr;
+TEST(CaseParser, parseText) {
+    std::string path = "test/data/text.txt";
+    ArticleParser parser(path);
+    Article* article = nullptr;
     
-//     parser.parse();
-//     s = parser.getShape();
+    parser.parse();
+    article = parser.getArticle();
 
-//     ASSERT_EQ(typeid(Circle), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
-//     delete s;
-// }
+    ASSERT_EQ(typeid(Text), typeid(*article));
+    ASSERT_EQ("This is a text", article->getText());
+    delete article;
+}
 
-// TEST(CaseParser, parseRectangle) {
-//     std::string path = "test/data/rectangle.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = 3.14 * 4.0;
+TEST(CaseParser, parseListItem) {
+    std::string path = "test/data/list_item.txt";
+    ArticleParser parser(path);
+    Article* article = nullptr;
+    
+    parser.parse();
+    article = parser.getArticle();
 
-//     parser.parse();
-//     Shape* s = parser.getShape();
+    ASSERT_EQ(typeid(ListItem), typeid(*article));
+    ASSERT_EQ("This is a list item", article->getText());
+    delete article;
+}
 
-//     ASSERT_EQ(typeid(Rectangle), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
-//     delete s;
-// }
+TEST(CaseParser, parseEmptyParagraph) {
+    std::string path = "test/data/empty_paragraph.txt";
+    ArticleParser parser(path);
+    Article* article = nullptr;
+    
+    parser.parse();
+    article = parser.getArticle();
 
-// TEST(CaseParser, parseTriangle) {
-//     std::string path = "test/data/triangle.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = 3 * 4 / 2;
+    ASSERT_EQ(typeid(Paragraph), typeid(*article));
+    ASSERT_EQ(1, article->getLevel());
+    ASSERT_EQ("This is an empty paragraph", article->getText());
+    delete article;
+}
 
-//     parser.parse();
-//     Shape* s = parser.getShape();
+TEST(CaseParser, parseSimpleParagraph) {
+    std::string path = "test/data/simple_paragraph.txt";
+    ArticleParser parser(path);
+    Article* article = nullptr;
+    
+    parser.parse();
+    article = parser.getArticle();
 
-//     ASSERT_EQ(typeid(Triangle), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
-//     delete s;
-// }
+    ASSERT_EQ(typeid(Paragraph), typeid(*article));
+    ASSERT_EQ("This is a simple paragraph", article->getText());
+    ASSERT_EQ(1, article->getLevel());
 
-// TEST(CaseParser, parseEmptyCompoundShape) {
-//     std::string path = "test/data/empty_compound.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = 0;
+    Iterator* it = article->createIterator();
+    Article* listItem = it->currentItem();
+    ASSERT_EQ(typeid(ListItem), typeid(*listItem));
+    ASSERT_EQ("This is a list item", listItem->getText());
 
-//     parser.parse();
-//     Shape* s = parser.getShape();
+    it->next();
+    Article* text = it->currentItem();
+    ASSERT_EQ(typeid(Text), typeid(*text));
+    ASSERT_EQ("This is a text", text->getText());
 
-//     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    it->next();
+    ASSERT_TRUE(it->isDone());
+    delete it;
+    delete article;
+}
 
-//     Iterator* it = s->createIterator();
-//     ASSERT_TRUE(it->isDone());
-//     delete it;
-//     delete s;
-// }
+TEST(CaseParser, parseComplexParagraph) {
+    std::string path = "test/data/complex_paragraph.txt";
+    ArticleParser parser(path);
+    Article* article = nullptr;
+    
+    parser.parse();
+    article = parser.getArticle();
 
-// TEST(CaseParser, parseCompoundShape) {
-//     std::string path = "test/data/simple_compound.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = M_PI + 3.14 * 4.0 + 3 * 4 / 2;
+    ASSERT_EQ(typeid(Paragraph), typeid(*article));
+    ASSERT_EQ("This is a complex paragraph", article->getText());
+    ASSERT_EQ(1, article->getLevel());
 
-//     parser.parse();
-//     Shape* s = parser.getShape();
+    Iterator* it = article->createIterator();
+    Article* listItem = it->currentItem();
+    ASSERT_EQ(typeid(ListItem), typeid(*listItem));
+    ASSERT_EQ("This is a list item", listItem->getText());
 
-//     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    it->next();
+    Article* innerParagraph = it->currentItem();
+    ASSERT_EQ(typeid(Paragraph), typeid(*innerParagraph));
+    ASSERT_EQ("This is an inner paragraph", innerParagraph->getText());
+    ASSERT_EQ(2, innerParagraph->getLevel());
 
-//     Iterator* it = s->createIterator();
-//     ASSERT_FALSE(it->isDone());
-//     delete it;
-//     delete s;
-// }
+    it->next();
+    Article* text = it->currentItem();
+    ASSERT_EQ(typeid(Text), typeid(*text));
+    ASSERT_EQ("This is a text", text->getText());
 
-// TEST(CaseParser, parseComplexCompoundShape) {
-//     std::string path = "test/data/complex_compound.txt";
-//     ShapeParser parser(path);
-//     double expectedArea = (M_PI + 3.14 * 4.0 + 3 * 4 / 2) * 2;
+    it->next();
+    ASSERT_TRUE(it->isDone());
 
-//     parser.parse();
-//     Shape* s = parser.getShape();
+    Iterator* innerIt = innerParagraph->createIterator();
+    Article* innerText = innerIt->currentItem();
+    ASSERT_EQ(typeid(Text), typeid(*innerText));
+    ASSERT_EQ("This is an inner text", innerText->getText());
 
-//     ASSERT_EQ(typeid(CompoundShape), typeid(*s));
-//     ASSERT_NEAR(expectedArea, s->area(), ACCURACY);
+    innerIt->next();
+    Article* innerListItem = innerIt->currentItem();
+    ASSERT_EQ(typeid(ListItem), typeid(*innerListItem));
+    ASSERT_EQ("This is an inner list item", innerListItem->getText());
 
-//     Iterator* it = s->createIterator();
-//     ASSERT_FALSE(it->isDone());
-//     delete it;
-//     delete s;
-// }
+    innerIt->next();
+    ASSERT_TRUE(innerIt->isDone());
 
-// TEST(CaseParser, parseNotExistFileShouldThrowException) {
-//     std::string path = "NOT_EXIT_FILE";
-//     ASSERT_ANY_THROW(ShapeParser parser(path));
-// }
+    delete it;
+    delete innerIt;
+    delete article;
+}
+
+
+TEST(CaseParser, parseNotExistFileShouldThrowException) {
+    std::string path = "NOT_EXIT_FILE";
+    ASSERT_ANY_THROW(ArticleParser parser(path));
+}

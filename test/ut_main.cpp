@@ -11,8 +11,8 @@
 #include "./visitor/ut_markdown_visitor.h"
 
 #include "./builder/ut_article_builder.h"
-#include "./builder/ut_article_parser.h"
 #include "./builder/ut_article_scanner.h"
+#include "./builder/ut_article_parser.h"
 
 
 int main(int argc, char** argv) {
